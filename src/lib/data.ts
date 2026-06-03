@@ -73,6 +73,7 @@ export interface Creator {
   rating: number;
   reviews: number;
   city: string;
+  region: "Montpellier" | "Léman";
   mode: "salon" | "mobile";
   address?: string;
   zones?: string[];
@@ -111,6 +112,7 @@ export const CREATORS: Creator[] = [
     rating: 4.9,
     reviews: 218,
     city: "Lausanne",
+    region: "Léman",
     mode: "salon",
     address: "Rue de Bourg 12, Lausanne",
     lat: 46.5205,
@@ -158,6 +160,7 @@ export const CREATORS: Creator[] = [
     rating: 4.8,
     reviews: 164,
     city: "Genève",
+    region: "Léman",
     mode: "salon",
     address: "Rue du Rhône 65, Genève",
     lat: 46.2041,
@@ -199,6 +202,7 @@ export const CREATORS: Creator[] = [
     rating: 4.9,
     reviews: 142,
     city: "Nyon",
+    region: "Léman",
     mode: "mobile",
     zones: ["Nyon", "Gland", "Rolle", "Coppet"],
     radiusKm: 12,
@@ -242,6 +246,7 @@ export const CREATORS: Creator[] = [
     rating: 4.7,
     reviews: 98,
     city: "Lausanne",
+    region: "Léman",
     mode: "salon",
     address: "Av. de la Gare 33, Lausanne",
     lat: 46.5169,
@@ -282,6 +287,7 @@ export const CREATORS: Creator[] = [
     rating: 5.0,
     reviews: 76,
     city: "Genève",
+    region: "Léman",
     mode: "mobile",
     zones: ["Genève", "Carouge", "Versoix", "Meyrin"],
     radiusKm: 15,
@@ -325,6 +331,7 @@ export const CREATORS: Creator[] = [
     rating: 4.8,
     reviews: 131,
     city: "Vevey",
+    region: "Léman",
     mode: "salon",
     address: "Rue du Lac 8, Vevey",
     lat: 46.4612,
@@ -364,6 +371,7 @@ export const CREATORS: Creator[] = [
     rating: 4.6,
     reviews: 89,
     city: "Morges",
+    region: "Léman",
     mode: "salon",
     address: "Grand-Rue 54, Morges",
     lat: 46.5101,
@@ -401,6 +409,7 @@ export const CREATORS: Creator[] = [
     rating: 4.7,
     reviews: 110,
     city: "Gland",
+    region: "Léman",
     mode: "mobile",
     zones: ["Gland", "Nyon", "Rolle", "Morges", "Aubonne"],
     radiusKm: 18,
@@ -433,6 +442,225 @@ export const CREATORS: Creator[] = [
     whatsapp: "41790000008",
     instagram: "belle.domicile",
   },
+
+  // ── Montpellier ──────────────────────────────────────────────
+  {
+    id: "m1",
+    slug: "maison-lila",
+    name: "Maison Lila",
+    handle: "@maison.lila",
+    tagline: "Lash & brow artist · Place de la Comédie",
+    categories: ["cils", "sourcils"],
+    rating: 4.9,
+    reviews: 187,
+    city: "Montpellier",
+    region: "Montpellier",
+    mode: "salon",
+    address: "Place de la Comédie 4, Montpellier",
+    lat: 43.6085,
+    lng: 3.8796,
+    bio: "Le repère beauté du regard en plein cœur de Montpellier. Volume russe, rehaussement, brow lamination. Un écrin doux à deux pas de la Comédie.",
+    avatarSeed: 18,
+    coverSeed: 52,
+    verified: true,
+    services: [
+      { name: "Volume Russe", duration: "2h15", price: 89, popular: true },
+      { name: "Rehaussement de cils", duration: "1h", price: 55, popular: true },
+      { name: "Brow lamination", duration: "1h", price: 49 },
+      { name: "Teinture sourcils", duration: "30 min", price: 25 },
+    ],
+    gallery: [
+      g("maison-lila", 1, "cils", "Volume russe intense", true),
+      g("maison-lila", 2, "sourcils", "Brow lamination", true),
+      g("maison-lila", 3, "cils", "Rehaussement naturel"),
+      g("maison-lila", 4, "sourcils", "Teinture henné"),
+      g("maison-lila", 5, "cils", "Effet eyeliner"),
+    ],
+    stories: [
+      { id: "s1", category: "cils", seed: 13, caption: "Volume russe du jour 🪶", kind: "realisation" },
+      { id: "s2", category: "sourcils", seed: 24, caption: "Avant / Après lamination", kind: "before-after" },
+      { id: "s3", category: "cils", seed: 35, caption: "Créneaux libres samedi", kind: "dispo" },
+    ],
+    reviewsList: [
+      { author: "Manon L.", rating: 5, text: "La meilleure de Montpellier ! Mon regard est sublimé, tenue parfaite.", when: "il y a 2 jours" },
+      { author: "Sarah B.", rating: 5, text: "Salon magnifique en plein centre, accueil adorable. Je recommande à 100%.", when: "il y a 1 semaine" },
+      { author: "Chloé D.", rating: 4, text: "Très belle pose, ponctuelle. Parfait avant les vacances.", when: "il y a 3 semaines" },
+    ],
+    booking: ["internal", "whatsapp", "instagram"],
+    whatsapp: "33600000011",
+    instagram: "maison.lila",
+  },
+  {
+    id: "m2",
+    slug: "nails-marianne",
+    name: "Nails Studio Marianne",
+    handle: "@nails.marianne",
+    tagline: "Nail art & gel · Port Marianne",
+    categories: ["ongles"],
+    rating: 4.8,
+    reviews: 156,
+    city: "Montpellier",
+    region: "Montpellier",
+    mode: "salon",
+    address: "Avenue Raymond Dugrand 12, Port Marianne, Montpellier",
+    lat: 43.6019,
+    lng: 3.8967,
+    bio: "Studio ongles design à Port Marianne. Gel, chrome, baby boomer et nail art sur-mesure. Hygiène irréprochable, ambiance cosy et moderne.",
+    avatarSeed: 210,
+    coverSeed: 240,
+    verified: true,
+    services: [
+      { name: "Pose gel + nail art", duration: "1h30", price: 45, popular: true },
+      { name: "Baby boomer", duration: "1h20", price: 42 },
+      { name: "Chrome glaze", duration: "1h15", price: 40, popular: true },
+      { name: "Remplissage", duration: "1h", price: 35 },
+    ],
+    gallery: [
+      g("nails-marianne", 1, "ongles", "Chrome glazed"),
+      g("nails-marianne", 2, "ongles", "Baby boomer"),
+      g("nails-marianne", 3, "ongles", "Nail art floral"),
+      g("nails-marianne", 4, "ongles", "French micro"),
+      g("nails-marianne", 5, "ongles", "Rouge intense"),
+    ],
+    stories: [
+      { id: "s1", category: "ongles", seed: 6, caption: "Chrome de la semaine 💅", kind: "realisation" },
+      { id: "s2", category: "ongles", seed: 17, caption: "-15% sur le nail art ce mois", kind: "promo" },
+    ],
+    reviewsList: [
+      { author: "Léa P.", rating: 5, text: "Mes ongles tiennent 3 semaines sans broncher, le nail art est canon.", when: "il y a 4 jours" },
+      { author: "Inès M.", rating: 4, text: "Très propre, designs au top. Parking facile à Port Marianne.", when: "il y a 2 semaines" },
+    ],
+    booking: ["internal", "whatsapp"],
+    whatsapp: "33600000012",
+    instagram: "nails.marianne",
+  },
+  {
+    id: "m3",
+    slug: "ines-makeup-mtp",
+    name: "Inès Makeup",
+    handle: "@ines.makeup.mtp",
+    tagline: "MUA mobile · Mariées & soirées",
+    categories: ["maquillage", "cils"],
+    rating: 5.0,
+    reviews: 92,
+    city: "Montpellier",
+    region: "Montpellier",
+    mode: "mobile",
+    zones: ["Montpellier", "Castelnau-le-Lez", "Lattes", "Pérols", "Juvignac"],
+    radiusKm: 20,
+    lat: 43.6112,
+    lng: 3.8772,
+    bio: "Make-up artist montpelliéraine spécialisée mariées et événements. Je me déplace sur tout le bassin de Thau et l'agglo pour un teint lumineux longue tenue.",
+    avatarSeed: 46,
+    coverSeed: 64,
+    verified: true,
+    services: [
+      { name: "Maquillage mariée + essai", duration: "2h", price: 220, popular: true },
+      { name: "Maquillage soirée", duration: "1h", price: 75 },
+      { name: "Pose cils à bande", duration: "20 min", price: 25 },
+      { name: "Cours auto-maquillage", duration: "1h30", price: 90 },
+    ],
+    gallery: [
+      g("ines-makeup-mtp", 1, "maquillage", "Teint glowy mariée"),
+      g("ines-makeup-mtp", 2, "maquillage", "Bronze soirée"),
+      g("ines-makeup-mtp", 3, "cils", "Regard intense"),
+      g("ines-makeup-mtp", 4, "maquillage", "Nude lumineux"),
+    ],
+    stories: [
+      { id: "s1", category: "maquillage", seed: 4, caption: "Mariée du week-end 👰", kind: "realisation" },
+      { id: "s2", category: "maquillage", seed: 29, caption: "Dispo saison des mariages 2026", kind: "dispo" },
+    ],
+    reviewsList: [
+      { author: "Marine F.", rating: 5, text: "Inès a sublimé mon mariage, tenue toute la journée sous la chaleur de l'Hérault !", when: "il y a 6 jours" },
+      { author: "Julie R.", rating: 5, text: "Douce, pro, à l'écoute. Le plus beau teint que j'aie jamais eu.", when: "il y a 1 mois" },
+    ],
+    booking: ["whatsapp", "instagram", "internal"],
+    whatsapp: "33600000013",
+    instagram: "ines.makeup.mtp",
+  },
+  {
+    id: "m4",
+    slug: "blond-atelier-mtp",
+    name: "Blond Atelier",
+    handle: "@blond.atelier.mtp",
+    tagline: "Coloriste blond & balayage · Écusson",
+    categories: ["coiffure"],
+    rating: 4.7,
+    reviews: 134,
+    city: "Montpellier",
+    region: "Montpellier",
+    mode: "salon",
+    address: "Rue Foch 8, Écusson, Montpellier",
+    lat: 43.6112,
+    lng: 3.8736,
+    bio: "Spécialiste du blond dans le quartier historique de l'Écusson. Balayage, blond polaire, ombré et soins sur-mesure pour des cheveux lumineux toute l'année.",
+    avatarSeed: 260,
+    coverSeed: 290,
+    services: [
+      { name: "Balayage Blond", duration: "3h", price: 120, popular: true },
+      { name: "Coupe & Brushing", duration: "1h", price: 45 },
+      { name: "Ombré hair", duration: "2h30", price: 110, popular: true },
+      { name: "Soin botanique", duration: "40 min", price: 35 },
+    ],
+    gallery: [
+      g("blond-atelier-mtp", 1, "coiffure", "Balayage blond polaire", true),
+      g("blond-atelier-mtp", 2, "coiffure", "Ombré caramel"),
+      g("blond-atelier-mtp", 3, "coiffure", "Blond miel"),
+      g("blond-atelier-mtp", 4, "coiffure", "Brushing wavy"),
+    ],
+    stories: [
+      { id: "s1", category: "coiffure", seed: 8, caption: "Transformation blond ✨", kind: "before-after" },
+    ],
+    reviewsList: [
+      { author: "Camille V.", rating: 5, text: "Enfin le blond de mes rêves à Montpellier, lumineux et pas abîmé.", when: "il y a 3 jours" },
+      { author: "Nawel S.", rating: 4, text: "Super coloriste, salon dans l'Écusson très agréable.", when: "il y a 2 semaines" },
+    ],
+    booking: ["internal", "instagram"],
+    instagram: "blond.atelier.mtp",
+  },
+  {
+    id: "m5",
+    slug: "brow-bar-mtp",
+    name: "Brow Bar MTP",
+    handle: "@browbar.mtp",
+    tagline: "Sourcils & maquillage à domicile",
+    categories: ["sourcils", "maquillage", "ongles"],
+    rating: 4.8,
+    reviews: 78,
+    city: "Montpellier",
+    region: "Montpellier",
+    mode: "mobile",
+    zones: ["Montpellier", "Lattes", "Pérols", "Mauguio", "Castelnau-le-Lez"],
+    radiusKm: 18,
+    lat: 43.605,
+    lng: 3.889,
+    bio: "Le bar à sourcils qui vient à vous. Restructuration, lamination, teinture et maquillage express à domicile — idéal mamans pressées et EVJF montpelliéraines.",
+    avatarSeed: 105,
+    coverSeed: 135,
+    services: [
+      { name: "Restructuration + teinture", duration: "50 min", price: 39, popular: true },
+      { name: "Brow lamination", duration: "1h", price: 49, popular: true },
+      { name: "Maquillage express", duration: "40 min", price: 45 },
+      { name: "Forfait EVJF (groupe)", duration: "sur devis", price: 180 },
+    ],
+    gallery: [
+      g("brow-bar-mtp", 1, "sourcils", "Lamination naturelle", true),
+      g("brow-bar-mtp", 2, "sourcils", "Teinture henné"),
+      g("brow-bar-mtp", 3, "maquillage", "Make-up glowy"),
+      g("brow-bar-mtp", 4, "ongles", "Set nude à domicile"),
+    ],
+    stories: [
+      { id: "s1", category: "sourcils", seed: 12, caption: "Lamination à domicile ✨", kind: "realisation" },
+      { id: "s2", category: "maquillage", seed: 30, caption: "Tournée Lattes jeudi", kind: "dispo" },
+    ],
+    reviewsList: [
+      { author: "Sofia K.", rating: 5, text: "Elle est venue pour mon EVJF, toutes les filles ont adoré ! Sourcils parfaits.", when: "il y a 5 jours" },
+      { author: "Émilie T.", rating: 4, text: "Pratique à domicile, ponctuelle et douce.", when: "il y a 3 semaines" },
+    ],
+    booking: ["whatsapp", "instagram"],
+    whatsapp: "33600000015",
+    instagram: "browbar.mtp",
+  },
 ];
 
 export const getCreator = (slug: string) =>
@@ -447,7 +675,14 @@ export interface FeedItem {
   likes: number;
 }
 
+const gal = (slug: string, i = 0) => getCreator(slug)!.gallery[i];
+
 export const FEED: FeedItem[] = [
+  { id: "fm1", creatorSlug: "maison-lila", media: gal("maison-lila", 0), caption: "Volume russe intense en plein cœur de Montpellier 🪶 Glissez pour l'avant/après.", likes: 1876 },
+  { id: "fm2", creatorSlug: "ines-makeup-mtp", media: gal("ines-makeup-mtp", 0), caption: "Teint glowy mariée qui tient sous le soleil de l'Hérault 👰 Je me déplace sur l'agglo.", likes: 2410 },
+  { id: "fm3", creatorSlug: "nails-marianne", media: gal("nails-marianne", 0), caption: "Chrome glaze à Port Marianne 💅 La tendance ongles du moment.", likes: 1644 },
+  { id: "fm4", creatorSlug: "blond-atelier-mtp", media: gal("blond-atelier-mtp", 0), caption: "Balayage blond polaire dans l'Écusson ✨ Du brun au blond en une séance.", likes: 1320 },
+  { id: "fm5", creatorSlug: "brow-bar-mtp", media: gal("brow-bar-mtp", 0), caption: "Brow lamination à domicile à Montpellier 🤎 Sourcils peignés, zéro effort.", likes: 988 },
   { id: "f1", creatorSlug: "sarah-beauty", media: CREATORS[0].gallery[0], caption: "Volume russe glamour pour un regard de biche 🦌 Tenue garantie 4 semaines.", likes: 1243 },
   { id: "f2", creatorSlug: "studio-lumi", media: CREATORS[1].gallery[0], caption: "Du brun au blond polaire en une séance ✨ Glissez pour voir la transformation.", likes: 2087 },
   { id: "f3", creatorSlug: "nails-by-jade", media: CREATORS[2].gallery[0], caption: "Chrome glazed donut 🍩 La tendance ongles de la saison, à domicile.", likes: 1762 },
@@ -480,3 +715,21 @@ export const TRENDS: Trend[] = [
 export const INSPIRATIONS: MediaItem[] = CREATORS.flatMap((c) =>
   c.gallery.map((m) => ({ ...m }))
 );
+
+// ── Villes / régions (sélecteur) ─────────────────────────────
+export type RegionKey = "all" | "Montpellier" | "Léman";
+
+export interface CityOption {
+  key: RegionKey;
+  label: string;
+  center: [number, number];
+  zoom: number;
+}
+
+export const CITIES: CityOption[] = [
+  { key: "Montpellier", label: "Montpellier", center: [43.61, 3.877], zoom: 13 },
+  { key: "Léman", label: "Lac Léman", center: [46.45, 6.35], zoom: 10 },
+  { key: "all", label: "Partout", center: [45.0, 5.1], zoom: 6 },
+];
+
+export const cityOf = (k: RegionKey) => CITIES.find((c) => c.key === k)!;

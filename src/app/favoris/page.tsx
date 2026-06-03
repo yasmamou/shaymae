@@ -6,6 +6,7 @@ import { CREATORS, type MediaItem, type Creator } from "@/lib/data";
 import { Media } from "@/lib/Media";
 import { SaveButton } from "@/components/SaveButton";
 import { ProCard } from "@/components/ProCard";
+import { AccountButton } from "@/components/AccountButton";
 
 const ALL_MEDIA: MediaItem[] = CREATORS.flatMap((c) => c.stories.map((s) => ({
   id: `${c.slug}-s-${s.id}`, category: s.category, seed: s.seed, label: s.caption,
@@ -38,10 +39,17 @@ export default function FavorisPage() {
   return (
     <div className="min-h-[100dvh] pb-32">
       <header className="sticky top-0 z-30 glass border-b border-white/50 px-5 pb-3 pt-[max(14px,env(safe-area-inset-top))]">
-        <h1 className="font-display text-3xl font-bold text-ink">Mes inspirations</h1>
-        <p className="text-[12px] text-ink-soft">
-          Votre board beauté — à envoyer à votre créatrice
-        </p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h1 className="font-display text-3xl font-bold text-ink">Mes inspirations</h1>
+            <p className="text-[12px] text-ink-soft">
+              Votre board beauté — à envoyer à votre créatrice
+            </p>
+          </div>
+          <span className="lg:hidden">
+            <AccountButton />
+          </span>
+        </div>
       </header>
 
       {empty ? (
@@ -81,7 +89,7 @@ export default function FavorisPage() {
               <h2 className="mb-3 font-display text-xl font-semibold text-ink">
                 Réalisations gardées
               </h2>
-              <div className="columns-2 gap-3">
+              <div className="columns-2 gap-3 md:columns-3 lg:columns-4">
                 {medias.map(({ rawId, media }, i) => (
                   <div
                     key={rawId}

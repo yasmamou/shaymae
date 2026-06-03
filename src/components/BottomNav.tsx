@@ -16,7 +16,7 @@ export function BottomNav() {
   const { count } = useFavorites();
 
   return (
-    <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-[480px] px-4 pb-[max(14px,env(safe-area-inset-bottom))]">
+    <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-40 mx-auto w-full max-w-[480px] px-4 pb-[max(14px,env(safe-area-inset-bottom))] lg:hidden">
       <div className="pointer-events-auto glass shadow-soft flex items-center justify-around rounded-full border border-white/60 px-2 py-2">
         {TABS.map((t) => {
           const active =

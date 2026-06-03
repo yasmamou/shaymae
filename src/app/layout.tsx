@@ -2,7 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 import { FavoritesProvider } from "@/components/FavoritesProvider";
+import { AuthProvider } from "@/components/AuthProvider";
 import { BottomNav } from "@/components/BottomNav";
+import { SideNav } from "@/components/SideNav";
 
 const display = Cormorant_Garamond({
   variable: "--font-display",
@@ -37,13 +39,18 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${display.variable} ${body.variable} h-full`}>
       <body className="min-h-full">
-        <FavoritesProvider>
-          {/* App shell : cadre « mobile premium » centré sur desktop */}
-          <div className="mx-auto flex min-h-dvh w-full max-w-[480px] flex-col bg-blanc/40 shadow-soft">
-            <main className="relative flex-1">{children}</main>
+        <AuthProvider>
+          <FavoritesProvider>
+            {/* App shell adaptatif : mobile = colonne + barre du bas, desktop = sidebar web */}
+            <div className="mx-auto flex min-h-dvh w-full max-w-[1180px]">
+              <SideNav />
+              <div className="relative min-w-0 flex-1 bg-blanc/40 max-lg:mx-auto max-lg:w-full max-lg:max-w-[520px] lg:border-x lg:border-line/70 lg:shadow-soft">
+                <main className="relative">{children}</main>
+              </div>
+            </div>
             <BottomNav />
-          </div>
-        </FavoritesProvider>
+          </FavoritesProvider>
+        </AuthProvider>
       </body>
     </html>
   );

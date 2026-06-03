@@ -199,7 +199,7 @@ export default async function ProPage({
       {/* Galerie */}
       <section className="px-5 pt-7">
         <h2 className="mb-3 font-display text-xl font-semibold text-ink">Galerie</h2>
-        <div className="columns-2 gap-3">
+        <div className="columns-2 gap-3 lg:columns-3">
           {creator.gallery.map((m, i) => (
             <div
               key={m.id}
@@ -260,8 +260,8 @@ export default async function ProPage({
         </div>
       </section>
 
-      {/* CTA fixe réservation */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-24 z-30 mx-auto w-full max-w-[480px] px-5">
+      {/* CTA fixe réservation (mobile) */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-24 z-30 mx-auto w-full max-w-[480px] px-5 lg:hidden">
         <div className="pointer-events-auto flex items-center gap-3 rounded-full glass border border-white/60 p-2 pl-5 shadow-soft">
           <span className="flex-1 text-sm">
             <span className="font-bold text-ink">Dès {Math.min(...creator.services.map((s) => s.price))}.–</span>

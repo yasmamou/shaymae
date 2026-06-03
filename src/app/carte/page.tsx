@@ -2,9 +2,10 @@
 
 import dynamic from "next/dynamic";
 import { useMemo, useRef, useState } from "react";
-import { CREATORS, type CategoryKey } from "@/lib/data";
+import { CREATORS, CITIES, type CategoryKey, type RegionKey } from "@/lib/data";
 import { CategoryChips } from "@/components/CategoryChips";
 import { ProCard } from "@/components/ProCard";
+import { AccountButton } from "@/components/AccountButton";
 
 const ProMap = dynamic(() => import("@/components/ProMap"), {
   ssr: false,
@@ -20,6 +21,7 @@ type Mode = "all" | "salon" | "mobile";
 export default function CartePage() {
   const [cat, setCat] = useState<CategoryKey | "all">("all");
   const [mode, setMode] = useState<Mode>("all");
+  const [region, setRegion] = useState<RegionKey>("Montpellier");
   const [selected, setSelected] = useState<string | undefined>();
   const stripRef = useRef<HTMLDivElement>(null);
 
@@ -27,10 +29,11 @@ export default function CartePage() {
     () =>
       CREATORS.filter(
         (c) =>
+          (region === "all" || c.region === region) &&
           (cat === "all" || c.categories.includes(cat)) &&
           (mode === "all" || c.mode === mode)
       ),
-    [cat, mode]
+    [cat, mode, region]
   );
 
   const select = (slug: string) => {
@@ -56,10 +59,32 @@ export default function CartePage() {
                 Carte Shaymae
               </p>
               <p className="text-[11px] text-ink-soft">
-                {filtered.length} créatrice{filtered.length > 1 ? "s" : ""} · arc lémanique
+                {filtered.length} créatrice{filtered.length > 1 ? "s" : ""}
+                {region !== "all" ? ` · ${CITIES.find((c) => c.key === region)?.label}` : ""}
               </p>
             </div>
+            <AccountButton />
           </div>
+        </div>
+
+        {/* Sélecteur de ville */}
+        <div className="pointer-events-auto flex gap-2 px-5">
+          {CITIES.map((c) => (
+            <button
+              key={c.key}
+              onClick={() => {
+                setRegion(c.key);
+                setSelected(undefined);
+              }}
+              className={`rounded-full border px-3.5 py-1.5 text-xs font-semibold shadow-float transition active:scale-95 ${
+                region === c.key
+                  ? "border-transparent bg-gradient-to-r from-rose-deep to-or-rose text-white"
+                  : "border-white/60 glass text-ink"
+              }`}
+            >
+              📍 {c.label}
+            </button>
+          ))}
         </div>
 
         <div className="pointer-events-auto">

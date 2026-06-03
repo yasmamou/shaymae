@@ -48,7 +48,7 @@ export function BookingButton({
 
       {open && (
         <div
-          className="fixed inset-0 z-50 mx-auto flex w-full max-w-[480px] items-end"
+          className="fixed inset-0 z-50 mx-auto flex w-full max-w-[480px] items-end lg:max-w-lg lg:items-center lg:p-6"
           role="dialog"
           aria-modal="true"
         >
@@ -57,7 +57,7 @@ export function BookingButton({
             className="absolute inset-0 bg-ink/30 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
-          <div className="relative w-full animate-float-up rounded-t-[2rem] bg-blanc p-5 pb-[max(24px,env(safe-area-inset-bottom))] shadow-soft">
+          <div className="relative w-full animate-float-up rounded-t-[2rem] bg-blanc p-5 pb-[max(24px,env(safe-area-inset-bottom))] shadow-soft lg:rounded-[2rem] lg:pb-5">
             <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-line" />
             <h3 className="font-display text-2xl font-semibold text-ink">
               Réserver chez {creator.name}

@@ -11,6 +11,7 @@ import {
 import { Media } from "@/lib/Media";
 import { CategoryChips } from "@/components/CategoryChips";
 import { SaveButton } from "@/components/SaveButton";
+import { AccountButton } from "@/components/AccountButton";
 
 export default function DecouvrirPage() {
   const [cat, setCat] = useState<CategoryKey | "all">("all");
@@ -24,10 +25,17 @@ export default function DecouvrirPage() {
   return (
     <div className="min-h-[100dvh] pb-32">
       <header className="sticky top-0 z-30 glass border-b border-white/50 px-5 pb-3 pt-[max(14px,env(safe-area-inset-top))]">
-        <h1 className="font-display text-3xl font-bold text-ink">Tendances</h1>
-        <p className="text-[12px] text-ink-soft">
-          Les prestations les plus populaires près de chez vous
-        </p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h1 className="font-display text-3xl font-bold text-ink">Tendances</h1>
+            <p className="text-[12px] text-ink-soft">
+              Les prestations les plus populaires près de chez vous
+            </p>
+          </div>
+          <span className="lg:hidden">
+            <AccountButton />
+          </span>
+        </div>
       </header>
 
       {/* Tendances */}
@@ -77,7 +85,7 @@ export default function DecouvrirPage() {
           <CategoryChips value={cat} onChange={setCat} />
         </div>
 
-        <div className="columns-2 gap-3 [column-fill:_balance]">
+        <div className="columns-2 gap-3 [column-fill:_balance] md:columns-3 lg:columns-4">
           {inspirations.map((m, i) => (
             <div
               key={m.id + i}

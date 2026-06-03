@@ -18,6 +18,11 @@ et la dimension locale de Google Maps — dans un univers beauté premium, doux 
 - **Avant / Après** natif avec curseur interactif
 - **Tendances** (`/decouvrir`) — prestations populaires près de chez vous
 - **Inspiration** (`/favoris`) — board type Pinterest, sauvegarde locale
+- **Comptes** (`/connexion`, `/inscription`, `/compte`) — clientes **et** créatrices ; navigation libre sans compte
+- **Espace créatrice** (`/studio`) — la créatrice publie ses réalisations, qui remontent dans le feed
+- **Responsive** — version mobile immersive sur téléphone, vraie version web (sidebar) sur ordinateur
+- **Vraies photos** (Unsplash) pertinentes par catégorie, avec repli dégradé si une image manque
+- **Montpellier** — contenu et carte centrés sur Montpellier (+ arc lémanique)
 
 ## 🛠 Stack
 

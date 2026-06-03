@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Media } from "@/lib/Media";
+import { beforeAfterFor } from "@/lib/images";
 import type { CategoryKey } from "@/lib/data";
 
 export function BeforeAfterSlider({
@@ -16,6 +17,7 @@ export function BeforeAfterSlider({
   const [pos, setPos] = useState(52);
   const ref = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
+  const { before, after } = beforeAfterFor(category, seed, 800);
 
   const move = (clientX: number) => {
     const el = ref.current;
@@ -38,8 +40,8 @@ export function BeforeAfterSlider({
       onPointerUp={() => (dragging.current = false)}
     >
       {/* APRÈS (fond) */}
-      <Media category={category} seed={seed} rounded="" className="h-full w-full" glyph />
-      <span className="absolute right-3 top-3 rounded-full glass px-2.5 py-1 text-[10px] font-semibold tracking-wide text-ink shadow-float">
+      <Media category={category} seed={seed} src={after} rounded="" className="h-full w-full" glyph={false} />
+      <span className="pointer-events-none absolute right-3 top-3 rounded-full glass px-2.5 py-1 text-[10px] font-semibold tracking-wide text-ink shadow-float">
         APRÈS
       </span>
 
@@ -50,19 +52,20 @@ export function BeforeAfterSlider({
       >
         <Media
           category={category}
-          seed={seed + 180}
+          seed={seed}
+          src={before}
           rounded=""
-          className="h-full w-full grayscale-[0.35] brightness-95"
-          glyph
+          className="h-full w-full [&_img]:grayscale-[0.55] [&_img]:brightness-95 [&_img]:contrast-95"
+          glyph={false}
         />
-        <span className="absolute left-3 top-3 rounded-full glass px-2.5 py-1 text-[10px] font-semibold tracking-wide text-ink shadow-float">
+        <span className="pointer-events-none absolute left-3 top-3 rounded-full glass px-2.5 py-1 text-[10px] font-semibold tracking-wide text-ink shadow-float">
           AVANT
         </span>
       </div>
 
       {/* poignée */}
       <div
-        className="absolute inset-y-0 flex w-0 items-center justify-center"
+        className="pointer-events-none absolute inset-y-0 flex w-0 items-center justify-center"
         style={{ left: `${pos}%` }}
       >
         <div className="absolute inset-y-0 w-0.5 bg-white/90 shadow-[0_0_12px_rgba(0,0,0,0.25)]" />
