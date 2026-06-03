@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────
+   Shaymae — design tokens
+   « Luxe, féminin, doux, premium, moderne. Pas bling-bling. »
+   ────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Principales */
+  --rose-poudre: #f4d9d9;
+  --rose-deep: #e6b3b8;
+  --nude: #e7d3c4;
+  --beige: #efe3d6;
+  --creme: #faf3ec;
+  --blanc-casse: #fdfaf6;
+
+  /* Accent luxe */
+  --dore-champagne: #cda86b;
+  --or-rose: #d9a48a;
+
+  /* Secondaires */
+  --lavande: #ddd5ec;
+  --sauge: #d3ddcf;
+
+  /* Encre & textes */
+  --ink: #3a2f2c;
+  --ink-soft: #7c6b63;
+  --line: #ece1d6;
+
+  --background: var(--blanc-casse);
+  --foreground: var(--ink);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-rose: var(--rose-poudre);
+  --color-rose-deep: var(--rose-deep);
+  --color-nude: var(--nude);
+  --color-beige: var(--beige);
+  --color-creme: var(--creme);
+  --color-blanc: var(--blanc-casse);
+  --color-champagne: var(--dore-champagne);
+  --color-or-rose: var(--or-rose);
+  --color-lavande: var(--lavande);
+  --color-sauge: var(--sauge);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+
+  --font-serif: var(--font-display);
+  --font-sans: var(--font-body);
+
+  --radius-xl2: 1.75rem;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(120% 60% at 100% 0%, #f7e6e2 0%, transparent 55%),
+    radial-gradient(120% 60% at 0% 100%, #efe6f3 0%, transparent 50%),
+    var(--blanc-casse);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+/* Glass / carte premium */
+.glass {
+  background: color-mix(in srgb, var(--blanc-casse) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+.shadow-soft {
+  box-shadow: 0 18px 50px -22px rgba(120, 86, 78, 0.45);
+}
+.shadow-float {
+  box-shadow: 0 10px 30px -12px rgba(120, 86, 78, 0.35);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(110deg, #b88a4e, #e6c98f 45%, #c79a64);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Scrollbars discrets */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Snap vertical pour le feed immersif */
+.snap-feed {
+  scroll-snap-type: y mandatory;
+}
+.snap-item {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes float-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-float-up {
+  animation: float-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  50% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.animate-pop { animation: pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* Leaflet : on adoucit l'UI par défaut */
+.leaflet-container {
+  font-family: var(--font-body), sans-serif;
+  background: #efe6e0 !important;
+}
+.leaflet-control-attribution {
+  background: rgba(255, 255, 255, 0.6) !important;
+  font-size: 9px !important;
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 18px !important;
+  box-shadow: 0 18px 50px -22px rgba(120, 86, 78, 0.5) !important;
+  padding: 2px !important;
+}
+.leaflet-popup-tip {
+  box-shadow: none !important;
+}
+.leaflet-bar a {
+  border-radius: 10px !important;
+  color: var(--ink) !important;
+}
