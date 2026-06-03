@@ -114,10 +114,10 @@ export default function CartePage() {
         </div>
       </div>
 
-      {/* Bandeau de cartes en bas */}
+      {/* Bandeau de cartes compactes, posé tout en bas (recouvre peu la map) */}
       <div
         ref={stripRef}
-        className="no-scrollbar absolute inset-x-0 bottom-28 z-[1000] flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-1"
+        className="no-scrollbar absolute inset-x-0 bottom-[max(96px,calc(env(safe-area-inset-bottom)+92px))] z-[1000] flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 lg:bottom-5"
       >
         {filtered.map((c) => {
           const active = selected === c.slug;
@@ -125,17 +125,17 @@ export default function CartePage() {
             <div
               key={c.id}
               id={`strip-${c.slug}`}
-              className={`w-[78%] shrink-0 snap-center transition ${
-                active ? "scale-100" : "scale-[0.97] opacity-90"
+              className={`w-[84%] shrink-0 snap-center rounded-2xl transition sm:w-[70%] lg:w-[340px] ${
+                active ? "ring-2 ring-or-rose" : "opacity-95"
               }`}
               onClick={() => setSelected(c.slug)}
             >
-              <ProCard creator={c} />
+              <ProCard creator={c} compact />
             </div>
           );
         })}
         {filtered.length === 0 && (
-          <div className="w-full rounded-3xl glass p-6 text-center text-sm text-ink-soft shadow-float">
+          <div className="w-full rounded-2xl glass p-4 text-center text-sm text-ink-soft shadow-float">
             Aucune créatrice pour ce filtre. Essayez une autre catégorie ✨
           </div>
         )}

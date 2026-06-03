@@ -7,10 +7,51 @@ import { SaveButton } from "./SaveButton";
 export function ProCard({
   creator,
   distanceKm,
+  compact = false,
 }: {
   creator: Creator;
   distanceKm?: number;
+  compact?: boolean;
 }) {
+  if (compact) {
+    return (
+      <Link
+        href={`/pro/${creator.slug}`}
+        className="group flex items-center gap-3 overflow-hidden rounded-2xl border border-white/60 bg-blanc/90 p-2 pr-3 shadow-float transition active:scale-[0.99]"
+      >
+        <div className="relative shrink-0">
+          <Media
+            category={creator.categories[0]}
+            seed={creator.coverSeed}
+            rounded="rounded-xl"
+            glyph={false}
+            className="h-16 w-16"
+          />
+          <span className="absolute -bottom-1 -right-1 grid h-5 w-5 place-items-center rounded-full bg-blanc text-[10px] shadow-float">
+            {creator.mode === "mobile" ? "🚗" : "🏠"}
+          </span>
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="flex items-center gap-1 truncate text-[13px] font-bold text-ink">
+            {creator.name}
+            {creator.verified && <span className="text-[9px]">✅</span>}
+          </p>
+          <p className="truncate text-[11px] text-ink-soft">{creator.tagline}</p>
+          <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-ink-soft">
+            <span className="font-bold text-ink">⭐ {creator.rating}</span>
+            <span>({creator.reviews})</span>
+            <span>·</span>
+            <span className="truncate">📍 {creator.city}</span>
+            {distanceKm !== undefined && <span>· {distanceKm.toFixed(1)} km</span>}
+          </div>
+        </div>
+        <span className="shrink-0 rounded-full bg-ink px-3 py-1.5 text-[11px] font-bold text-blanc">
+          Voir
+        </span>
+      </Link>
+    );
+  }
+
   return (
     <Link
       href={`/pro/${creator.slug}`}
