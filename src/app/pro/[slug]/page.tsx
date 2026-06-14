@@ -115,18 +115,20 @@ export default async function ProPage({
           <p className="mt-4 text-[14px] leading-relaxed text-ink-soft">{creator.bio}</p>
 
           <div className="mt-4 flex gap-2.5">
-            <BookingButton creator={creator} className="flex-1 text-center" />
-            {creator.instagram && (
-              <a
-                href={`https://instagram.com/${creator.instagram}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="grid place-items-center rounded-full glass border border-white/60 px-4 shadow-float"
-                aria-label="Instagram"
-              >
-                📸
-              </a>
-            )}
+            <Link
+              href={`/reserver/${creator.slug}`}
+              className="flex-1 rounded-full bg-gradient-to-r from-rose-deep to-or-rose py-3 text-center text-sm font-bold text-white shadow-soft"
+            >
+              📅 Réserver
+            </Link>
+            <Link
+              href={`/messages/${creator.slug}`}
+              className="grid place-items-center rounded-full glass border border-white/60 px-4 text-lg shadow-float"
+              aria-label="Message"
+            >
+              ✉
+            </Link>
+            <BookingButton creator={creator} variant="ghost" label="Contacter" />
           </div>
         </div>
       </div>
@@ -154,9 +156,10 @@ export default async function ProPage({
         <h2 className="mb-3 font-display text-xl font-semibold text-ink">Prestations</h2>
         <div className="overflow-hidden rounded-3xl border border-line bg-blanc/70">
           {creator.services.map((s, i) => (
-            <div
+            <Link
               key={s.name}
-              className={`flex items-center gap-3 px-4 py-3.5 ${
+              href={`/reserver/${creator.slug}?service=${encodeURIComponent(s.name)}`}
+              className={`flex items-center gap-3 px-4 py-3.5 transition hover:bg-creme/40 ${
                 i > 0 ? "border-t border-line" : ""
               }`}
             >
@@ -171,10 +174,9 @@ export default async function ProPage({
                 </p>
                 <p className="text-[12px] text-ink-soft">⏱ {s.duration}</p>
               </div>
-              <p className="font-display text-lg font-semibold text-ink">
-                {s.price}.–
-              </p>
-            </div>
+              <p className="font-display text-lg font-semibold text-ink">{s.price}.–</p>
+              <span className="rounded-full bg-ink px-3 py-1.5 text-[11px] font-bold text-blanc">Réserver</span>
+            </Link>
           ))}
         </div>
       </section>
@@ -230,9 +232,13 @@ export default async function ProPage({
           {creator.reviewsList.map((r, i) => (
             <div key={i} className="rounded-3xl border border-line bg-blanc/70 p-4">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-bold text-ink">{r.author}</p>
+                <p className="flex items-center gap-1.5 text-sm font-bold text-ink">
+                  {r.author}
+                  {i === 0 && <span className="rounded-full bg-champagne/30 px-2 py-0.5 text-[9px] font-bold text-ink">⭐ Fidèle</span>}
+                </p>
                 <p className="text-[12px] text-ink-soft">{r.when}</p>
               </div>
+              <p className="mt-0.5 inline-flex items-center gap-1 rounded-full bg-sauge/40 px-2 py-0.5 text-[10px] font-semibold text-ink">✅ Avis vérifié</p>
               <p className="mt-0.5 text-sm">
                 {"★".repeat(r.rating)}
                 <span className="text-line">{"★".repeat(5 - r.rating)}</span>
@@ -267,7 +273,9 @@ export default async function ProPage({
             <span className="font-bold text-ink">Dès {Math.min(...creator.services.map((s) => s.price))}.–</span>
             <span className="text-ink-soft"> · {creator.name}</span>
           </span>
-          <BookingButton creator={creator} />
+          <Link href={`/reserver/${creator.slug}`} className="rounded-full bg-gradient-to-r from-rose-deep to-or-rose px-5 py-3 text-sm font-bold text-white shadow-soft">
+            Réserver
+          </Link>
         </div>
       </div>
     </div>

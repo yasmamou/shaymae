@@ -107,6 +107,14 @@ export function FeedCard({
             </span>
           </Link>
           <p className="text-sm leading-snug text-white/95 drop-shadow">{item.caption}</p>
+          {creator && (
+            <Link
+              href={`/reserver/${creator.slug}`}
+              className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-white/95 px-4 py-2 text-[13px] font-bold text-ink shadow-soft"
+            >
+              📅 Réserver cette prestation
+            </Link>
+          )}
         </div>
       </div>
     </section>

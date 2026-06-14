@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "@/components/AuthProvider";
 import { useFavorites } from "@/components/FavoritesProvider";
+import { LangSwitcher } from "@/components/LangSwitcher";
 import { Avatar } from "@/lib/Media";
 
 export default function ComptePage() {
@@ -49,18 +50,26 @@ export default function ComptePage() {
       </div>
 
       <div className="mt-5 flex flex-col gap-2.5">
+        <Row href="/rendez-vous" emoji="📅" label="Mes rendez-vous" hint="Historique & rappels" />
+        <Row href="/messages" emoji="✉" label="Mes messages" hint="Échanges avec les créatrices" />
         <Row href="/favoris" emoji="♥" label="Mes inspirations" hint={`${count} sauvegardée${count > 1 ? "s" : ""}`} />
+        <Row href="/formations" emoji="🎓" label="Formations" hint="Monter en compétences" />
         {user.role === "creatrice" ? (
-          <Row href="/studio" emoji="✨" label="Mon espace créatrice" hint="Publier du contenu" />
+          <Row href="/studio" emoji="✨" label="Mon espace créatrice" hint="Agenda, stats, publications" />
         ) : (
           <Row href="/inscription" emoji="🌸" label="Devenir créatrice" hint="Publier & être réservée" />
         )}
-        <Row href="/carte" emoji="◍" label="Explorer la carte" hint="Créatrices près de vous" />
+        <Row href="/abonnement" emoji="★" label="Abonnement pro" hint="Découverte & Premium" />
+      </div>
+
+      <div className="mt-5 flex items-center justify-between rounded-2xl border border-line bg-blanc/70 px-4 py-3">
+        <span className="text-sm font-semibold text-ink">🌍 Langue</span>
+        <LangSwitcher compact />
       </div>
 
       <button
         onClick={signOut}
-        className="mt-5 w-full rounded-full border border-line bg-blanc/70 py-3.5 text-sm font-bold text-ink-soft"
+        className="mt-4 w-full rounded-full border border-line bg-blanc/70 py-3.5 text-sm font-bold text-ink-soft"
       >
         Se déconnecter
       </button>

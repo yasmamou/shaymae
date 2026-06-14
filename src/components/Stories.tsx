@@ -135,13 +135,22 @@ function StoryViewer({
         <p className="max-w-[80%] font-display text-2xl font-semibold leading-tight text-white drop-shadow">
           {story.caption}
         </p>
-        <Link
-          href={`/pro/${creator.slug}`}
-          onClick={onClose}
-          className="rounded-full bg-white/95 px-5 py-2.5 text-sm font-bold text-ink shadow-soft"
-        >
-          Voir le profil →
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/reserver/${creator.slug}`}
+            onClick={onClose}
+            className="rounded-full bg-gradient-to-r from-rose-deep to-or-rose px-5 py-2.5 text-sm font-bold text-white shadow-soft"
+          >
+            Réserver
+          </Link>
+          <Link
+            href={`/pro/${creator.slug}`}
+            onClick={onClose}
+            className="rounded-full bg-white/95 px-4 py-2.5 text-sm font-bold text-ink shadow-soft"
+          >
+            Profil →
+          </Link>
+        </div>
       </div>
 
       <style>{`@keyframes growbar { from { width: 0 } to { width: 100% } }`}</style>

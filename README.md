@@ -6,7 +6,15 @@
 Shaymae réunit l'inspiration visuelle d'Instagram & Pinterest, le format immersif de TikTok
 et la dimension locale de Google Maps — dans un univers beauté premium, doux et féminin.
 
-📄 Vision produit & direction artistique complètes : [`SHAYMAE.md`](./SHAYMAE.md)
+📄 Vision produit & direction artistique : [`SHAYMAE.md`](./SHAYMAE.md)
+🗺️ Roadmap plateforme tout-en-un (réservation, gestion, social, formation) : [`ROADMAP.md`](./ROADMAP.md)
+
+### Plateforme esthétique tout-en-un
+Recherche & filtres (`/recherche`) · Réservation avec créneaux & acompte (`/reserver/[slug]`) ·
+Mes rendez-vous (`/rendez-vous`) · Messagerie (`/messages`) · Espace pro à onglets —
+agenda, stats, clientes, équipe (`/studio`) · Formations (`/formations`) ·
+Abonnement & monétisation (`/abonnement`) · Multilingue FR/EN/AR/ES (RTL) ·
+Avis vérifiés, badges vérifiée & cliente fidèle, réservation depuis le feed/les stories.
 
 ## ✨ Fonctionnalités
 

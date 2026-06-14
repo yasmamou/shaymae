@@ -13,10 +13,12 @@ export function BookingButton({
   creator,
   variant = "solid",
   className = "",
+  label = "Réserver",
 }: {
   creator: Creator;
   variant?: "solid" | "ghost";
   className?: string;
+  label?: string;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -43,7 +45,7 @@ export function BookingButton({
             : "glass border border-white/60 text-ink shadow-float"
         }`}
       >
-        Réserver
+        {label}
       </button>
 
       {open && (

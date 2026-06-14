@@ -733,3 +733,248 @@ export const CITIES: CityOption[] = [
 ];
 
 export const cityOf = (k: RegionKey) => CITIES.find((c) => c.key === k)!;
+
+// ── Taxonomie des prestations (recherche) ────────────────────
+// Chaque prestation pointe vers une catégorie « visuelle » de base
+// (pour les images/dégradés), tout en restant cherchable précisément.
+export interface Prestation {
+  key: string;
+  label: string;
+  base: CategoryKey;
+  emoji: string;
+}
+
+export const PRESTATIONS: Prestation[] = [
+  { key: "onglerie", label: "Onglerie", base: "ongles", emoji: "💅" },
+  { key: "extensions-cils", label: "Extensions de cils", base: "cils", emoji: "🪶" },
+  { key: "rehaussement-cils", label: "Rehaussement de cils", base: "cils", emoji: "👁️" },
+  { key: "brow-lift", label: "Brow Lift", base: "sourcils", emoji: "🤎" },
+  { key: "maquillage-permanent", label: "Maquillage permanent", base: "maquillage", emoji: "✒️" },
+  { key: "maquillage", label: "Maquillage", base: "maquillage", emoji: "💄" },
+  { key: "coiffure", label: "Coiffure", base: "coiffure", emoji: "💇‍♀️" },
+  { key: "extensions-cheveux", label: "Extensions de cheveux", base: "coiffure", emoji: "💁‍♀️" },
+  { key: "tape-in", label: "Tape-In", base: "coiffure", emoji: "🎀" },
+  { key: "weft", label: "Weft", base: "coiffure", emoji: "🧵" },
+  { key: "strass-dentaires", label: "Strass dentaires", base: "maquillage", emoji: "💎" },
+  { key: "blanchiment-dentaire", label: "Blanchiment dentaire", base: "maquillage", emoji: "🦷" },
+  { key: "regard", label: "Esthétique du regard", base: "cils", emoji: "✨" },
+  { key: "formation", label: "Formation", base: "maquillage", emoji: "🎓" },
+];
+
+export const prestationOf = (k: string) => PRESTATIONS.find((p) => p.key === k);
+
+// ── Disponibilités (génération déterministe de créneaux) ─────
+export interface DaySlots {
+  date: string; // ISO yyyy-mm-dd
+  dayLabel: string;
+  slots: string[]; // ex. "09:30"
+}
+
+const DAY_NAMES = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
+const ALL_SLOTS = ["09:00", "09:30", "10:30", "11:30", "14:00", "15:00", "16:00", "17:00", "18:00"];
+
+/** Créneaux fictifs mais stables pour une créatrice, à partir d'une date de référence (ms). */
+export function availabilityFor(creator: Creator, fromMs: number, days = 7): DaySlots[] {
+  const seed = creator.slug.length + creator.reviews;
+  const out: DaySlots[] = [];
+  for (let i = 0; i < days; i++) {
+    const d = new Date(fromMs + i * 86400000);
+    const dow = d.getUTCDay();
+    // dimanche souvent fermé
+    const closed = dow === 0 && (seed + i) % 2 === 0;
+    const slots = closed
+      ? []
+      : ALL_SLOTS.filter((_, k) => (seed + i * 3 + k * 5) % 3 !== 0);
+    out.push({
+      date: d.toISOString().slice(0, 10),
+      dayLabel: `${DAY_NAMES[dow]} ${d.getUTCDate()}`,
+      slots,
+    });
+  }
+  return out;
+}
+
+/** Première date avec au moins un créneau (libellé court). */
+export function nextAvailability(creator: Creator, fromMs: number): string {
+  const a = availabilityFor(creator, fromMs, 7).find((d) => d.slots.length > 0);
+  return a ? `${a.dayLabel} · ${a.slots[0]}` : "Sur demande";
+}
+
+// ── Formations ───────────────────────────────────────────────
+export interface Formation {
+  id: string;
+  slug: string;
+  title: string;
+  trainer: string;
+  base: CategoryKey;
+  city: string;
+  region: RegionKey;
+  durationDays: number;
+  price: number;
+  rating: number;
+  reviews: number;
+  level: "Initiation" | "Perfectionnement" | "Expert";
+  certified: boolean;
+  seed: number;
+  program: string[];
+}
+
+export const FORMATIONS: Formation[] = [
+  {
+    id: "fo1", slug: "volume-russe-pro", title: "Volume Russe — Certification Pro",
+    trainer: "Maison Lila", base: "cils", city: "Montpellier", region: "Montpellier",
+    durationDays: 2, price: 690, rating: 4.9, reviews: 64, level: "Perfectionnement",
+    certified: true, seed: 21,
+    program: ["Théorie du cil & morphologie", "Hygiène & sécurité", "Création de bouquets 2D-6D", "Pose sur modèle", "Examen & certificat"],
+  },
+  {
+    id: "fo2", slug: "nail-art-avance", title: "Nail Art Avancé & Chrome",
+    trainer: "Nails Studio Marianne", base: "ongles", city: "Montpellier", region: "Montpellier",
+    durationDays: 1, price: 320, rating: 4.8, reviews: 41, level: "Perfectionnement",
+    certified: true, seed: 8,
+    program: ["Préparation de l'ongle", "Techniques chrome & glaze", "Nail art freehand", "Pratique sur modèle"],
+  },
+  {
+    id: "fo3", slug: "brow-lift-initiation", title: "Brow Lift & Lamination — Initiation",
+    trainer: "The Brow House", base: "sourcils", city: "Lausanne", region: "Léman",
+    durationDays: 1, price: 380, rating: 4.7, reviews: 33, level: "Initiation",
+    certified: true, seed: 14,
+    program: ["Analyse du sourcil", "Produits & temps de pose", "Lamination pas à pas", "Teinture", "Certificat"],
+  },
+  {
+    id: "fo4", slug: "balayage-blond", title: "Balayage Blond & Techniques de lumière",
+    trainer: "Blond Atelier", base: "coiffure", city: "Montpellier", region: "Montpellier",
+    durationDays: 2, price: 540, rating: 4.8, reviews: 28, level: "Perfectionnement",
+    certified: true, seed: 51,
+    program: ["Théorie de la couleur", "Mèches & balayage", "Patine & toning", "Pratique sur modèle"],
+  },
+  {
+    id: "fo5", slug: "maquillage-mariee", title: "Maquillage Mariée Longue Tenue",
+    trainer: "Glow by Maya", base: "maquillage", city: "Genève", region: "Léman",
+    durationDays: 2, price: 620, rating: 5.0, reviews: 47, level: "Expert",
+    certified: true, seed: 27,
+    program: ["Préparation de peau", "Teint longue tenue", "Regard & cils", "Shooting & portfolio", "Certificat"],
+  },
+  {
+    id: "fo6", slug: "extensions-tape-in", title: "Extensions Tape-In & Weft",
+    trainer: "Atelier Hair", base: "coiffure", city: "Morges", region: "Léman",
+    durationDays: 1, price: 410, rating: 4.6, reviews: 19, level: "Initiation",
+    certified: false, seed: 35,
+    program: ["Poses Tape-In", "Technique Weft", "Entretien & dépose", "Conseils client"],
+  },
+];
+
+export const getFormation = (slug: string) => FORMATIONS.find((f) => f.slug === slug);
+
+// ── Recherche ────────────────────────────────────────────────
+export interface SearchFilters {
+  query: string;
+  base: CategoryKey | "all";
+  region: RegionKey;
+  mode: "all" | "salon" | "mobile";
+  maxPrice: number | null;
+  minRating: number;
+  verifiedOnly: boolean;
+}
+
+// ── Données dashboard prestataire (mock) ─────────────────────
+export interface StudioClient {
+  name: string;
+  visits: number;
+  loyal: boolean;
+  lastService: string;
+  note: string;
+  preference: string;
+}
+
+export const STUDIO_CLIENTS: StudioClient[] = [
+  { name: "Camille R.", visits: 9, loyal: true, lastService: "Volume Russe", note: "Yeux sensibles — patch doux.", preference: "Effet naturel" },
+  { name: "Inès B.", visits: 6, loyal: true, lastService: "Rehaussement", note: "Vient toutes les 4 semaines.", preference: "Café offert ☕" },
+  { name: "Léa M.", visits: 3, loyal: false, lastService: "Brow lift", note: "Préfère les RDV du soir.", preference: "Sourcils fournis" },
+  { name: "Manon L.", visits: 12, loyal: true, lastService: "Volume Russe", note: "Allergie colle classique → colle sensitive.", preference: "Mega volume" },
+  { name: "Chloé D.", visits: 1, loyal: false, lastService: "Teinture", note: "Nouvelle cliente.", preference: "—" },
+  { name: "Sofia K.", visits: 5, loyal: true, lastService: "Lamination", note: "Toujours ponctuelle.", preference: "Effet peigné" },
+];
+
+const AGENDA_NAMES = ["Camille", "Inès", "Léa", "Manon", "Chloé", "Sofia", "Marine", "Julie", "Nawel", "Émilie"];
+const AGENDA_SERVICES = [
+  { name: "Volume Russe", color: "#e6b3b8" },
+  { name: "Rehaussement", color: "#cda86b" },
+  { name: "Brow lift", color: "#d3ddcf" },
+  { name: "Pose gel", color: "#ddd5ec" },
+  { name: "Maquillage", color: "#d9a48a" },
+];
+
+export interface Appointment {
+  time: string;
+  client: string;
+  service: string;
+  color: string;
+  collaborator: string;
+}
+export interface AgendaDay {
+  date: string;
+  dayLabel: string;
+  appointments: Appointment[];
+}
+
+const COLLABS = ["Vous", "Vous", "Vous", "Sarah (collab.)"];
+
+export function studioAgenda(fromMs: number, days = 7): AgendaDay[] {
+  const out: AgendaDay[] = [];
+  for (let i = 0; i < days; i++) {
+    const d = new Date(fromMs + i * 86400000);
+    const dow = d.getUTCDay();
+    const n = dow === 0 ? 0 : ((i * 7 + 3) % 4) + 1; // 0 le dimanche, 1-4 sinon
+    const appts: Appointment[] = [];
+    for (let k = 0; k < n; k++) {
+      const sIdx = (i * 3 + k * 2) % AGENDA_SERVICES.length;
+      const hour = 9 + ((i + k * 3) % 8);
+      appts.push({
+        time: `${String(hour).padStart(2, "0")}:${k % 2 ? "30" : "00"}`,
+        client: AGENDA_NAMES[(i * 2 + k) % AGENDA_NAMES.length],
+        service: AGENDA_SERVICES[sIdx].name,
+        color: AGENDA_SERVICES[sIdx].color,
+        collaborator: COLLABS[(i + k) % COLLABS.length],
+      });
+    }
+    appts.sort((a, b) => a.time.localeCompare(b.time));
+    out.push({ date: d.toISOString().slice(0, 10), dayLabel: `${DAY_NAMES[dow]} ${d.getUTCDate()}`, appointments: appts });
+  }
+  return out;
+}
+
+export const STUDIO_STATS = {
+  rdvWeek: 18,
+  revenueMonth: 4280,
+  fillRate: 82,
+  cancelRate: 6,
+  topServices: [
+    { name: "Volume Russe", count: 42 },
+    { name: "Rehaussement", count: 28 },
+    { name: "Brow lift", count: 19 },
+  ],
+};
+
+export function searchCreators(f: SearchFilters): Creator[] {
+  const q = f.query.trim().toLowerCase();
+  return CREATORS.filter((c) => {
+    if (f.region !== "all" && c.region !== f.region) return false;
+    if (f.base !== "all" && !c.categories.includes(f.base)) return false;
+    if (f.mode !== "all" && c.mode !== f.mode) return false;
+    if (f.verifiedOnly && !c.verified) return false;
+    if (c.rating < f.minRating) return false;
+    const minPrice = Math.min(...c.services.map((s) => s.price));
+    if (f.maxPrice !== null && minPrice > f.maxPrice) return false;
+    if (q) {
+      const hay = [
+        c.name, c.tagline, c.bio, c.city,
+        ...c.services.map((s) => s.name),
+        ...c.categories.map((k) => categoryOf(k).label),
+        ...(c.zones ?? []),
+      ].join(" ").toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
