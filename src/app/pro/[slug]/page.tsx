@@ -4,6 +4,7 @@ import { CREATORS, getCreator, categoryOf } from "@/lib/data";
 import { Media, Avatar } from "@/lib/Media";
 import { BookingButton } from "@/components/BookingButton";
 import { SaveButton } from "@/components/SaveButton";
+import { FollowButton } from "@/components/FollowButton";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 
 export function generateStaticParams() {
@@ -19,7 +20,7 @@ export async function generateMetadata({
   const c = getCreator(slug);
   if (!c) return {};
   return {
-    title: `${c.name} · ${c.tagline} — Shaymae`,
+    title: `${c.name} · ${c.tagline} — Glow`,
     description: c.bio,
   };
 }
@@ -73,10 +74,13 @@ export default async function ProPage({
               />
             </div>
             <div className="min-w-0 flex-1 pt-1">
-              <h1 className="flex items-center gap-1.5 font-display text-2xl font-bold text-ink">
-                {creator.name}
-                {creator.verified && <span className="text-sm">✅</span>}
-              </h1>
+              <div className="flex items-start justify-between gap-2">
+                <h1 className="flex items-center gap-1.5 font-display text-2xl font-bold text-ink">
+                  {creator.name}
+                  {creator.verified && <span className="text-sm">✅</span>}
+                </h1>
+                <FollowButton slug={creator.slug} size="sm" />
+              </div>
               <p className="text-[13px] text-ink-soft">{creator.handle}</p>
               <p className="mt-0.5 text-[13px] font-medium text-ink">{creator.tagline}</p>
             </div>
@@ -95,21 +99,29 @@ export default async function ProPage({
           </div>
 
           {/* Localisation / zone */}
-          <div className="mt-3 rounded-2xl bg-sauge/30 px-4 py-3 text-[13px] text-ink">
-            {creator.mode === "salon" ? (
-              <p>📍 <span className="font-semibold">{creator.address}</span></p>
-            ) : (
-              <div>
-                <p className="font-semibold">🚗 Se déplace dans un rayon de {creator.radiusKm} km</p>
-                <p className="mt-1 flex flex-wrap gap-1.5">
-                  {creator.zones?.map((z) => (
-                    <span key={z} className="rounded-full bg-blanc/80 px-2 py-0.5 text-[11px] font-medium">
-                      {z}
-                    </span>
-                  ))}
-                </p>
-              </div>
-            )}
+          <div className="mt-3 flex items-start gap-2 rounded-2xl bg-sauge/30 px-4 py-3 text-[13px] text-ink">
+            <div className="min-w-0 flex-1">
+              {creator.mode === "salon" ? (
+                <p>📍 <span className="font-semibold">{creator.address}</span></p>
+              ) : (
+                <div>
+                  <p className="font-semibold">🚗 Se déplace dans un rayon de {creator.radiusKm} km</p>
+                  <p className="mt-1 flex flex-wrap gap-1.5">
+                    {creator.zones?.map((z) => (
+                      <span key={z} className="rounded-full bg-blanc/80 px-2 py-0.5 text-[11px] font-medium">
+                        {z}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              )}
+            </div>
+            <Link
+              href={`/carte?focus=${creator.slug}`}
+              className="shrink-0 rounded-full bg-brun-profond px-3 py-1.5 text-[11px] font-bold text-blanc"
+            >
+              🗺️ Voir sur la carte
+            </Link>
           </div>
 
           <p className="mt-4 text-[14px] leading-relaxed text-ink-soft">{creator.bio}</p>

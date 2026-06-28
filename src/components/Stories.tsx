@@ -54,6 +54,47 @@ export function StoriesBar() {
   );
 }
 
+/** Rail proéminent « Stories qui buzz » (aperçus en grand). */
+const buzzOrder = [...withStories].sort((a, b) => b.reviews - a.reviews);
+
+export function StoriesRail() {
+  const [active, setActive] = useState<number | null>(null);
+  return (
+    <>
+      <div className="no-scrollbar -mx-5 flex gap-3 overflow-x-auto px-5 pb-1">
+        {buzzOrder.map((c, i) => {
+          const s = c.stories[0];
+          return (
+            <button
+              key={c.id}
+              onClick={() => setActive(i)}
+              className="relative h-44 w-28 shrink-0 overflow-hidden rounded-2xl shadow-float"
+            >
+              <Media category={s.category} seed={s.seed} rounded="" glyph={false} className="h-full w-full" />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-ink/10" />
+              {i < 3 && (
+                <span className="absolute left-1.5 top-1.5 rounded-full bg-gold px-1.5 py-0.5 text-[9px] font-bold text-brun-profond">🔥 Buzz</span>
+              )}
+              <span className="absolute left-1.5 top-1.5 hidden" />
+              <span className="absolute inset-x-1.5 bottom-1.5 flex items-center gap-1.5">
+                <span className="rounded-full bg-gradient-to-tr from-rose-deep to-champagne p-[2px]">
+                  <span className="block rounded-full bg-blanc p-[1.5px]">
+                    <Avatar seed={c.avatarSeed} category={c.categories[0]} name={c.name} size={26} />
+                  </span>
+                </span>
+                <span className="truncate text-[10px] font-bold text-white drop-shadow">{c.name.split(" ")[0]}</span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      {active !== null && (
+        <StoryViewer creators={buzzOrder} startIndex={active} onClose={() => setActive(null)} />
+      )}
+    </>
+  );
+}
+
 function StoryViewer({
   creators,
   startIndex,

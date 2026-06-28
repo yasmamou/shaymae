@@ -2,12 +2,14 @@ import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 import { FavoritesProvider } from "@/components/FavoritesProvider";
+import { FollowsProvider } from "@/components/FollowsProvider";
 import { AuthProvider } from "@/components/AuthProvider";
 import { BookingsProvider } from "@/components/BookingsProvider";
 import { MessagesProvider } from "@/components/MessagesProvider";
 import { I18nProvider } from "@/components/I18nProvider";
 import { BottomNav } from "@/components/BottomNav";
 import { SideNav } from "@/components/SideNav";
+import { WelcomeGate } from "@/components/WelcomeGate";
 
 const display = Cormorant_Garamond({
   variable: "--font-display",
@@ -22,15 +24,15 @@ const body = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Shaymae — Découvrez les meilleures créatrices beauté autour de vous",
+  title: "Glow — Découvrez les meilleures créatrices beauté autour de vous",
   description:
     "Le Pinterest / TikTok géolocalisé de la beauté. Cils, ongles, coiffure, sourcils, maquillage : inspirez-vous et réservez près de chez vous.",
-  applicationName: "Shaymae",
-  appleWebApp: { capable: true, title: "Shaymae", statusBarStyle: "default" },
+  applicationName: "Glow",
+  appleWebApp: { capable: true, title: "Glow", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fdfaf6",
+  themeColor: "#2a1c16",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -45,18 +47,21 @@ export default function RootLayout({
         <I18nProvider>
           <AuthProvider>
             <FavoritesProvider>
-              <BookingsProvider>
-                <MessagesProvider>
-                  {/* App shell adaptatif : mobile = colonne + barre du bas, desktop = sidebar web */}
-                  <div className="mx-auto flex min-h-dvh w-full max-w-[1180px]">
-                    <SideNav />
-                    <div className="relative min-w-0 flex-1 bg-blanc/40 max-lg:mx-auto max-lg:w-full max-lg:max-w-[520px] lg:border-x lg:border-line/70 lg:shadow-soft">
-                      <main className="relative">{children}</main>
+              <FollowsProvider>
+                <BookingsProvider>
+                  <MessagesProvider>
+                    {/* App shell adaptatif : mobile = colonne + barre du bas, desktop = sidebar web */}
+                    <div className="mx-auto flex min-h-dvh w-full max-w-[1180px]">
+                      <SideNav />
+                      <div className="relative min-w-0 flex-1 bg-blanc/40 max-lg:mx-auto max-lg:w-full max-lg:max-w-[520px] lg:border-x lg:border-line/70 lg:shadow-soft">
+                        <main className="relative">{children}</main>
+                      </div>
                     </div>
-                  </div>
-                  <BottomNav />
-                </MessagesProvider>
-              </BookingsProvider>
+                    <BottomNav />
+                    <WelcomeGate />
+                  </MessagesProvider>
+                </BookingsProvider>
+              </FollowsProvider>
             </FavoritesProvider>
           </AuthProvider>
         </I18nProvider>

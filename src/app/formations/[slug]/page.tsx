@@ -55,7 +55,7 @@ export default function FormationDetail() {
         <section className="mt-6 rounded-3xl border border-line bg-sauge/20 p-4">
           <h2 className="mb-1 font-display text-lg font-semibold text-ink">Formatrice vérifiée ✅</h2>
           <p className="text-[13px] text-ink-soft">
-            {f.trainer} — identité, activité et certifications validées par Shaymae.
+            {f.trainer} — identité, activité et certifications validées par Glow.
             {f.certified ? " Un certificat reconnu est délivré en fin de formation." : ""}
           </p>
         </section>

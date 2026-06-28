@@ -112,7 +112,7 @@ export default function FavorisPage() {
               <button
                 onClick={() =>
                   alert(
-                    "Envoyer mes inspirations ✨\n\nBientôt : partagez ce board directement à la créatrice de votre choix via WhatsApp, Instagram ou la messagerie Shaymae."
+                    "Envoyer mes inspirations ✨\n\nBientôt : partagez ce board directement à la créatrice de votre choix via WhatsApp, Instagram ou la messagerie Glow."
                   )
                 }
                 className="mt-4 w-full rounded-full bg-ink py-3.5 text-sm font-bold text-blanc shadow-soft"

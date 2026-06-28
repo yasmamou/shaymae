@@ -14,7 +14,7 @@ export default function ConnexionPage() {
   return (
     <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col justify-center px-6 pb-32 pt-10">
       <Link href="/" className="mb-8 text-center font-display text-4xl font-bold text-gradient-gold">
-        Shaymae
+        Glow
       </Link>
       <div className="rounded-[2rem] border border-white/60 bg-blanc/85 p-6 shadow-soft">
         <h1 className="font-display text-3xl font-semibold text-ink">Bon retour ✨</h1>

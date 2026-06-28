@@ -24,11 +24,11 @@ export default function InscriptionPage() {
   return (
     <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col justify-center px-6 pb-32 pt-10">
       <Link href="/" className="mb-6 text-center font-display text-4xl font-bold text-gradient-gold">
-        Shaymae
+        Glow
       </Link>
       <div className="rounded-[2rem] border border-white/60 bg-blanc/85 p-6 shadow-soft">
         <h1 className="font-display text-3xl font-semibold text-ink">Créer un compte</h1>
-        <p className="mt-1 text-sm text-ink-soft">Rejoignez la communauté beauté Shaymae.</p>
+        <p className="mt-1 text-sm text-ink-soft">Rejoignez la communauté beauté Glow.</p>
 
         {/* Choix du rôle */}
         <div className="mt-5 grid grid-cols-2 gap-2.5">

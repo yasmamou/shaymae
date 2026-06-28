@@ -1,31 +1,42 @@
 @import "tailwindcss";
 
 /* ──────────────────────────────────────────────────────────────
-   Shaymae — design tokens
-   « Luxe, féminin, doux, premium, moderne. Pas bling-bling. »
+   Glow — design tokens
+   « Bien-être, luxe, douceur. » Marron profond · rose baby · doré.
    ────────────────────────────────────────────────────────────── */
 
 :root {
-  /* Principales */
-  --rose-poudre: #f4d9d9;
-  --rose-deep: #e6b3b8;
-  --nude: #e7d3c4;
-  --beige: #efe3d6;
-  --creme: #faf3ec;
-  --blanc-casse: #fdfaf6;
+  /* Marron (signature) */
+  --brun-profond: #2a1c16;
+  --brun: #4a3328;
+  --brun-soft: #6e5446;
 
-  /* Accent luxe */
-  --dore-champagne: #cda86b;
-  --or-rose: #d9a48a;
+  /* Rose baby */
+  --rose-baby: #f9dde4;
+  --rose: #f3ccd6;
+  --rose-deep: #e0a6b2;
 
-  /* Secondaires */
+  /* Doré / champagne */
+  --gold: #c9a227;
+  --champagne: #d4af7a;
+  --or-rose: #d4af7a;
+  --dore-champagne: #d4af7a;
+
+  /* Neutres chauds */
+  --nude: #e9d8c8;
+  --beige: #efe2d4;
+  --creme: #f7ede3;
+  --blanc-casse: #fbf4ee;
+  --rose-poudre: #f9dde4;
+
+  /* Secondaires doux */
   --lavande: #ddd5ec;
   --sauge: #d3ddcf;
 
-  /* Encre & textes */
-  --ink: #3a2f2c;
-  --ink-soft: #7c6b63;
-  --line: #ece1d6;
+  /* Encre & lignes */
+  --ink: #2a1c16;
+  --ink-soft: #846a59;
+  --line: #ece0d4;
 
   --background: var(--blanc-casse);
   --foreground: var(--ink);
@@ -35,12 +46,17 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
-  --color-rose: var(--rose-poudre);
+  --color-brun: var(--brun);
+  --color-brun-profond: var(--brun-profond);
+  --color-brun-soft: var(--brun-soft);
+  --color-rose: var(--rose);
+  --color-rose-baby: var(--rose-baby);
   --color-rose-deep: var(--rose-deep);
   --color-nude: var(--nude);
   --color-beige: var(--beige);
   --color-creme: var(--creme);
   --color-blanc: var(--blanc-casse);
+  --color-gold: var(--gold);
   --color-champagne: var(--dore-champagne);
   --color-or-rose: var(--or-rose);
   --color-lavande: var(--lavande);
@@ -65,8 +81,8 @@ html {
 
 body {
   background:
-    radial-gradient(120% 60% at 100% 0%, #f7e6e2 0%, transparent 55%),
-    radial-gradient(120% 60% at 0% 100%, #efe6f3 0%, transparent 50%),
+    radial-gradient(120% 60% at 100% 0%, #f6e1da 0%, transparent 55%),
+    radial-gradient(120% 55% at 0% 100%, #efe1d4 0%, transparent 50%),
     var(--blanc-casse);
   background-attachment: fixed;
   color: var(--foreground);
@@ -80,42 +96,38 @@ body {
 
 /* Glass / carte premium */
 .glass {
-  background: color-mix(in srgb, var(--blanc-casse) 72%, transparent);
+  background: color-mix(in srgb, var(--blanc-casse) 74%, transparent);
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
 }
 
+.glass-dark {
+  background: color-mix(in srgb, var(--brun-profond) 55%, transparent);
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+}
+
 .shadow-soft {
-  box-shadow: 0 18px 50px -22px rgba(120, 86, 78, 0.45);
+  box-shadow: 0 18px 50px -22px rgba(42, 28, 22, 0.5);
 }
 .shadow-float {
-  box-shadow: 0 10px 30px -12px rgba(120, 86, 78, 0.35);
+  box-shadow: 0 10px 30px -12px rgba(42, 28, 22, 0.38);
 }
 
 .text-gradient-gold {
-  background: linear-gradient(110deg, #b88a4e, #e6c98f 45%, #c79a64);
+  background: linear-gradient(110deg, #b88a3e, #e6c98f 45%, #c9a227);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 /* Scrollbars discrets */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* Snap vertical pour le feed immersif */
-.snap-feed {
-  scroll-snap-type: y mandatory;
-}
-.snap-item {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
+.snap-feed { scroll-snap-type: y mandatory; }
+.snap-item { scroll-snap-align: start; scroll-snap-stop: always; }
 
 @keyframes shimmer {
   0% { background-position: -200% 0; }
@@ -125,9 +137,7 @@ body {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.animate-float-up {
-  animation: float-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
+.animate-float-up { animation: float-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
 @keyframes pop {
   0% { transform: scale(0.6); opacity: 0; }
   50% { transform: scale(1.15); opacity: 1; }
@@ -135,24 +145,31 @@ body {
 }
 .animate-pop { animation: pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
 
-/* Leaflet : on adoucit l'UI par défaut */
-.leaflet-container {
-  font-family: var(--font-body), sans-serif;
-  background: #efe6e0 !important;
+@keyframes fade-hold {
+  0% { opacity: 0; transform: scale(0.96); }
+  20% { opacity: 1; transform: scale(1); }
+  80% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.02); }
 }
-.leaflet-control-attribution {
-  background: rgba(255, 255, 255, 0.6) !important;
-  font-size: 9px !important;
+.animate-fade-hold { animation: fade-hold 1.4s ease both; }
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.15; transform: translateY(0) scale(0.9); }
+  50% { opacity: 0.7; transform: translateY(-6px) scale(1.1); }
 }
-.leaflet-popup-content-wrapper {
-  border-radius: 18px !important;
-  box-shadow: 0 18px 50px -22px rgba(120, 86, 78, 0.5) !important;
-  padding: 2px !important;
+
+/* Filtre Glow Doré (caméra) */
+.glow-dore {
+  filter: saturate(1.05) contrast(0.96) brightness(1.06) sepia(0.12) hue-rotate(-6deg);
 }
-.leaflet-popup-tip {
-  box-shadow: none !important;
+.glow-bloom {
+  background: radial-gradient(60% 50% at 50% 38%, rgba(212,175,122,0.32), transparent 70%);
+  mix-blend-mode: screen;
 }
-.leaflet-bar a {
-  border-radius: 10px !important;
-  color: var(--ink) !important;
-}
+
+/* Leaflet */
+.leaflet-container { font-family: var(--font-body), sans-serif; background: #ece1d8 !important; }
+.leaflet-control-attribution { background: rgba(255,255,255,0.6) !important; font-size: 9px !important; }
+.leaflet-popup-content-wrapper { border-radius: 18px !important; box-shadow: 0 18px 50px -22px rgba(42,28,22,0.5) !important; padding: 2px !important; }
+.leaflet-popup-tip { box-shadow: none !important; }
+.leaflet-bar a { border-radius: 10px !important; color: var(--ink) !important; }

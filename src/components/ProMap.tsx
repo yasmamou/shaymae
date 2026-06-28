@@ -37,21 +37,31 @@ function FitBounds({ creators }: { creators: Creator[] }) {
   return null;
 }
 
+function FlyTo({ pos }: { pos: [number, number] }) {
+  const map = useMap();
+  useEffect(() => {
+    map.flyTo(pos, 14, { animate: true });
+  }, [pos, map]);
+  return null;
+}
+
 export default function ProMap({
   creators,
   selected,
   onSelect,
+  focus,
 }: {
   creators: Creator[];
   selected?: string;
   onSelect: (slug: string) => void;
+  focus?: [number, number];
 }) {
-  const center = useMemo<[number, number]>(() => [46.45, 6.35], []);
+  const center = useMemo<[number, number]>(() => focus ?? [43.61, 3.877], [focus]);
 
   return (
     <MapContainer
       center={center}
-      zoom={11}
+      zoom={focus ? 14 : 12}
       zoomControl={false}
       className="h-full w-full"
       scrollWheelZoom
@@ -60,7 +70,7 @@ export default function ProMap({
         attribution='&copy; OpenStreetMap'
         url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
       />
-      <FitBounds creators={creators} />
+      {focus ? <FlyTo pos={focus} /> : <FitBounds creators={creators} />}
       {creators.map((c) => (
         <Fragment key={c.id}>
           {c.mode === "mobile" && c.radiusKm && (

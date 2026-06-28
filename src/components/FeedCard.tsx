@@ -6,6 +6,7 @@ import { getCreator, type FeedItem } from "@/lib/data";
 import { Media, Avatar } from "@/lib/Media";
 import { BeforeAfterSlider } from "./BeforeAfterSlider";
 import { SaveButton } from "./SaveButton";
+import { FollowButton } from "./FollowButton";
 import { useFavorites } from "./FavoritesProvider";
 
 /** Auteur affiché : créatrice du catalogue, ou publication d'un compte (studio). */
@@ -42,7 +43,7 @@ export function FeedCard({
           verified: creator.verified,
           profileHref: `/pro/${creator.slug}`,
         }
-      : { name: "Créatrice Shaymae" });
+      : { name: "Créatrice Glow" });
 
   const onDoubleTap = () => {
     if (!liked) toggle(item.media.id);
@@ -88,8 +89,9 @@ export function FeedCard({
         </div>
 
         {/* infos auteur + légende */}
-        <div className="absolute inset-x-4 bottom-6 max-w-[78%]">
-          <Link href={a.profileHref ?? "#"} className="mb-2 flex items-center gap-2.5">
+        <div className="absolute inset-x-4 bottom-6 max-w-[80%]">
+          <div className="mb-2 flex items-center gap-2.5">
+          <Link href={a.profileHref ?? "#"} className="flex min-w-0 items-center gap-2.5">
             <Avatar seed={item.media.seed} category={item.media.category} name={a.name} size={40} ring />
             <span>
               <span className="flex items-center gap-1 text-sm font-bold text-white drop-shadow">
@@ -106,6 +108,8 @@ export function FeedCard({
               </span>
             </span>
           </Link>
+          {creator && <FollowButton slug={creator.slug} size="sm" onDark />}
+          </div>
           <p className="text-sm leading-snug text-white/95 drop-shadow">{item.caption}</p>
           {creator && (
             <Link
