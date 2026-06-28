@@ -20,7 +20,7 @@ export async function generateMetadata({
   const c = getCreator(slug);
   if (!c) return {};
   return {
-    title: `${c.name} · ${c.tagline} — Glow`,
+    title: `${c.name} · ${c.tagline} — Shaymae`,
     description: c.bio,
   };
 }

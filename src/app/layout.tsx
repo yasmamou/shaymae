@@ -24,11 +24,11 @@ const body = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Glow — Découvrez les meilleures créatrices beauté autour de vous",
+  title: "Shaymae — Découvrez les meilleures créatrices beauté autour de vous",
   description:
     "Le Pinterest / TikTok géolocalisé de la beauté. Cils, ongles, coiffure, sourcils, maquillage : inspirez-vous et réservez près de chez vous.",
-  applicationName: "Glow",
-  appleWebApp: { capable: true, title: "Glow", statusBarStyle: "default" },
+  applicationName: "Shaymae",
+  appleWebApp: { capable: true, title: "Shaymae", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {

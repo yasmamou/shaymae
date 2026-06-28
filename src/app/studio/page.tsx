@@ -37,7 +37,7 @@ export default function StudioPage() {
         </p>
         <div className="mt-6 flex w-full max-w-xs flex-col gap-2.5">
           <Link href="/inscription" className="rounded-full bg-gradient-to-r from-rose-deep to-or-rose py-3.5 text-sm font-bold text-white shadow-soft">
-            Devenir créatrice Glow
+            Devenir créatrice Shaymae
           </Link>
           <Link href="/connexion" className="rounded-full glass border border-white/60 py-3.5 text-sm font-bold text-ink shadow-float">
             J&apos;ai déjà un compte

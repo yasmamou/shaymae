@@ -15,7 +15,7 @@ export default function ComptePage() {
     return (
       <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col items-center justify-center px-8 pb-32 text-center">
         <span className="mb-4 text-6xl">💗</span>
-        <h1 className="font-display text-3xl font-semibold text-ink">Votre compte Glow</h1>
+        <h1 className="font-display text-3xl font-semibold text-ink">Votre compte Shaymae</h1>
         <p className="mt-2 max-w-xs text-sm text-ink-soft">
           Connectez-vous pour sauvegarder vos inspirations, suivre vos créatrices
           et réserver en un clic.

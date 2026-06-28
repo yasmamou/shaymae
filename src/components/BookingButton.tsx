@@ -6,7 +6,7 @@ import type { Creator } from "@/lib/data";
 const OPTIONS = {
   whatsapp: { emoji: "🟢", label: "WhatsApp", hint: "Réponse rapide, à toute heure" },
   instagram: { emoji: "📸", label: "Instagram", hint: "Échangez en DM" },
-  internal: { emoji: "📅", label: "Réservation Glow", hint: "Créneaux en direct" },
+  internal: { emoji: "📅", label: "Réservation Shaymae", hint: "Créneaux en direct" },
 } as const;
 
 export function BookingButton({
@@ -25,7 +25,7 @@ export function BookingButton({
   const hrefFor = (mode: keyof typeof OPTIONS) => {
     if (mode === "whatsapp" && creator.whatsapp) {
       const msg = encodeURIComponent(
-        `Bonjour ${creator.name} ✨ je vous ai trouvée sur Glow, j'aimerais réserver une prestation.`
+        `Bonjour ${creator.name} ✨ je vous ai trouvée sur Shaymae, j'aimerais réserver une prestation.`
       );
       return `https://wa.me/${creator.whatsapp}?text=${msg}`;
     }
@@ -91,7 +91,7 @@ export function BookingButton({
                     onClick={() => {
                       setOpen(false);
                       alert(
-                        `Réservation Glow interne — bientôt disponible ✨\n\nVous pourrez choisir un créneau directement dans l'agenda de ${creator.name}.`
+                        `Réservation Shaymae interne — bientôt disponible ✨\n\nVous pourrez choisir un créneau directement dans l'agenda de ${creator.name}.`
                       );
                     }}
                     className="text-left"

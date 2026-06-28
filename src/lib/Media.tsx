@@ -6,7 +6,7 @@ import { categoryOf } from "./data";
 import { imageFor } from "./images";
 
 /**
- * Média Glow : vraie photo (Unsplash, pertinente par catégorie) posée sur
+ * Média Shaymae : vraie photo (Unsplash, pertinente par catégorie) posée sur
  * un dégradé thématique. Si l'image échoue, on retombe élégamment sur le
  * dégradé + emoji — jamais d'image cassée.
  */

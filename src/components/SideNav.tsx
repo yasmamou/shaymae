@@ -31,7 +31,7 @@ export function SideNav() {
   return (
     <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col overflow-y-auto no-scrollbar px-4 py-6 lg:flex">
       <Link href="/" className="px-3">
-        <span className="font-display text-3xl font-bold text-gradient-gold">Glow</span>
+        <span className="font-display text-3xl font-bold text-gradient-gold">Shaymae</span>
         <span className="mt-1 block text-[11px] font-medium text-ink-soft">{t("common.near")}</span>
       </Link>
 

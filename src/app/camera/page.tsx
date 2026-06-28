@@ -28,7 +28,7 @@ export default function CameraPage() {
       }
       setStreaming(true);
     } catch {
-      setError("Caméra indisponible. Vous pouvez tout de même découvrir le filtre Glow Doré sur un exemple ci-dessous.");
+      setError("Caméra indisponible. Vous pouvez tout de même découvrir le filtre Shaymae Doré sur un exemple ci-dessous.");
     }
   };
 
@@ -66,7 +66,7 @@ export default function CameraPage() {
       {/* En-tête */}
       <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-4 pt-[max(14px,env(safe-area-inset-top))]">
         <Link href="/" className="grid h-10 w-10 place-items-center rounded-full glass-dark text-white">←</Link>
-        <p className="font-display text-lg font-semibold text-white">Caméra Glow</p>
+        <p className="font-display text-lg font-semibold text-white">Caméra Shaymae</p>
         <button onClick={() => { setFacing((f) => (f === "user" ? "environment" : "user")); if (streaming) { stopCamera(); setTimeout(startCamera, 150); } }} className="grid h-10 w-10 place-items-center rounded-full glass-dark text-white" aria-label="Changer de caméra">⟳</button>
       </div>
 
@@ -94,7 +94,7 @@ export default function CameraPage() {
                 <div>
                   <span className="text-5xl">📸</span>
                   <p className="mt-3 max-w-xs text-sm text-white/85">
-                    {error || "Activez la caméra pour capturer vos plus belles réalisations avec le filtre signature Glow Doré."}
+                    {error || "Activez la caméra pour capturer vos plus belles réalisations avec le filtre signature Shaymae Doré."}
                   </p>
                   <button onClick={startCamera} className="mt-5 rounded-full bg-gradient-to-r from-champagne to-gold px-6 py-3 text-sm font-bold text-brun-profond shadow-soft">
                     Activer la caméra
@@ -114,7 +114,7 @@ export default function CameraPage() {
         {showName && filter === "glow" && (
           <div className="pointer-events-none absolute inset-0 grid place-items-center">
             <span className="animate-fade-hold font-display text-4xl font-semibold tracking-wide text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
-              Glow Doré
+              Shaymae Doré
             </span>
           </div>
         )}
@@ -129,7 +129,7 @@ export default function CameraPage() {
             {/* Sélecteur de filtre */}
             <div className="flex items-center justify-center gap-4">
               <FilterDot active={filter === "none"} label="Original" onClick={() => setFilter("none")} plain />
-              <FilterDot active={filter === "glow"} label="Glow Doré" onClick={() => setFilter("glow")} />
+              <FilterDot active={filter === "glow"} label="Shaymae Doré" onClick={() => setFilter("glow")} />
             </div>
             {/* Déclencheur doré + voir/masquer filtre */}
             <div className="flex items-center justify-between">
@@ -152,7 +152,7 @@ export default function CameraPage() {
             <p className="text-center text-[12px] font-medium text-white/80">Glissez pour comparer Avant / Après ✨</p>
             <div className="flex items-center justify-center gap-3">
               <button onClick={() => setCaptured(null)} className="rounded-full glass-dark px-5 py-3 text-sm font-bold text-white">↺ Reprendre</button>
-              <button onClick={() => alert("Story Glow publiée ✨ (simulé)")} className="rounded-full bg-gradient-to-r from-champagne to-gold px-5 py-3 text-sm font-bold text-brun-profond shadow-soft">Partager en story</button>
+              <button onClick={() => alert("Story Shaymae publiée ✨ (simulé)")} className="rounded-full bg-gradient-to-r from-champagne to-gold px-5 py-3 text-sm font-bold text-brun-profond shadow-soft">Partager en story</button>
               <button onClick={() => alert("Envoyé à vos contacts 💌 (simulé)")} className="rounded-full glass-dark px-5 py-3 text-sm font-bold text-white">Contacts</button>
             </div>
           </>
@@ -217,7 +217,7 @@ function CapturedView({ src, filter }: { src: string; filter: Filter }) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt="Après" className={`absolute inset-0 h-full w-full object-cover ${filter === "glow" ? "glow-dore" : ""}`} />
       {filter === "glow" && <div className="pointer-events-none absolute inset-0 glow-bloom" />}
-      <span className="absolute right-3 top-16 rounded-full glass-dark px-2.5 py-1 text-[10px] font-bold text-white">APRÈS · Glow Doré</span>
+      <span className="absolute right-3 top-16 rounded-full glass-dark px-2.5 py-1 text-[10px] font-bold text-white">APRÈS · Shaymae Doré</span>
 
       {/* AVANT (brut) */}
       <div className="absolute inset-0 overflow-hidden" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>

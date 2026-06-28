@@ -35,7 +35,7 @@ export function WelcomeGate() {
 
       <div className="relative flex flex-1 flex-col items-center justify-center px-8 text-center">
         <span className="mb-4 text-5xl">✨</span>
-        <h1 className="font-display text-6xl font-bold text-gradient-gold">Glow</h1>
+        <h1 className="font-display text-6xl font-bold text-gradient-gold">Shaymae</h1>
         <p className="mt-3 max-w-xs text-[15px] leading-relaxed text-white/85">
           Votre rituel beauté, sublimé.<br />
           Découvrez, réservez et rayonnez.

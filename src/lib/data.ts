@@ -1,5 +1,5 @@
 // ──────────────────────────────────────────────────────────────
-// Glow — couche de données (mock)
+// Shaymae — couche de données (mock)
 // Données fictives riches : créatrices beauté de l'arc lémanique.
 // ──────────────────────────────────────────────────────────────
 

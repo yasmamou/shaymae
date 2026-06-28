@@ -43,7 +43,7 @@ export function FeedCard({
           verified: creator.verified,
           profileHref: `/pro/${creator.slug}`,
         }
-      : { name: "Créatrice Glow" });
+      : { name: "Créatrice Shaymae" });
 
   const onDoubleTap = () => {
     if (!liked) toggle(item.media.id);
