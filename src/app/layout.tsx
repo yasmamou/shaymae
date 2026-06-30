@@ -10,6 +10,7 @@ import { I18nProvider } from "@/components/I18nProvider";
 import { BottomNav } from "@/components/BottomNav";
 import { SideNav } from "@/components/SideNav";
 import { WelcomeGate } from "@/components/WelcomeGate";
+import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 
 const display = Cormorant_Garamond({
   variable: "--font-display",
@@ -29,6 +30,11 @@ export const metadata: Metadata = {
     "Le Pinterest / TikTok géolocalisé de la beauté. Cils, ongles, coiffure, sourcils, maquillage : inspirez-vous et réservez près de chez vous.",
   applicationName: "Shaymae",
   appleWebApp: { capable: true, title: "Shaymae", statusBarStyle: "default" },
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/icon-192.png",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export const viewport: Viewport = {
@@ -59,6 +65,7 @@ export default function RootLayout({
                     </div>
                     <BottomNav />
                     <WelcomeGate />
+                    <ServiceWorkerRegister />
                   </MessagesProvider>
                 </BookingsProvider>
               </FollowsProvider>
