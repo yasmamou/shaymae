@@ -1,15 +1,14 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { CREATORS, getCreator, categoryOf } from "@/lib/data";
+import { categoryOf } from "@/lib/data";
+import { getCreatorBySlug } from "@/db";
 import { Media, Avatar } from "@/lib/Media";
 import { BookingButton } from "@/components/BookingButton";
 import { SaveButton } from "@/components/SaveButton";
 import { FollowButton } from "@/components/FollowButton";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 
-export function generateStaticParams() {
-  return CREATORS.map((c) => ({ slug: c.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -17,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const c = getCreator(slug);
+  const c = await getCreatorBySlug(slug);
   if (!c) return {};
   return {
     title: `${c.name} · ${c.tagline} — Shaymae`,
@@ -31,7 +30,7 @@ export default async function ProPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const creator = getCreator(slug);
+  const creator = await getCreatorBySlug(slug);
   if (!creator) notFound();
 
   const baSeed = creator.gallery.find((g) => g.beforeAfter);
@@ -81,7 +80,13 @@ export default async function ProPage({
                 </h1>
                 <FollowButton slug={creator.slug} size="sm" />
               </div>
-              <p className="text-[13px] text-ink-soft">{creator.handle}</p>
+              {creator.instagram ? (
+                <a href={`https://instagram.com/${creator.instagram}`} target="_blank" rel="noopener noreferrer" className="text-[13px] font-medium text-ink-soft underline">
+                  {creator.handle} · Instagram ↗
+                </a>
+              ) : (
+                <p className="text-[13px] text-ink-soft">{creator.handle}</p>
+              )}
               <p className="mt-0.5 text-[13px] font-medium text-ink">{creator.tagline}</p>
             </div>
           </div>

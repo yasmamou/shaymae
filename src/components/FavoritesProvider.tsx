@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useCallback,
-} from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { useAuth } from "./AuthProvider";
 
 interface FavCtx {
   ids: string[];
@@ -19,26 +14,40 @@ const Ctx = createContext<FavCtx | null>(null);
 const KEY = "shaymae:favoris";
 
 export function FavoritesProvider({ children }: { children: React.ReactNode }) {
+  const { user, ready: authReady } = useAuth();
   const [ids, setIds] = useState<string[]>([]);
-  const [ready, setReady] = useState(false);
 
+  // Source des données : DB si connectée, sinon localStorage.
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) setIds(JSON.parse(raw));
-    } catch {}
-    setReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (ready) localStorage.setItem(KEY, JSON.stringify(ids));
-  }, [ids, ready]);
+    if (!authReady) return;
+    if (user) {
+      fetch("/api/favorites")
+        .then((r) => r.json())
+        .then((d) => setIds(d.ids ?? []))
+        .catch(() => {});
+    } else {
+      try {
+        const raw = localStorage.getItem(KEY);
+        setIds(raw ? JSON.parse(raw) : []);
+      } catch {}
+    }
+  }, [authReady, user]);
 
   const toggle = useCallback((id: string) => {
-    setIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [id, ...prev]
-    );
-  }, []);
+    setIds((prev) => {
+      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [id, ...prev];
+      if (user) {
+        fetch("/api/favorites", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ itemId: id }),
+        }).catch(() => {});
+      } else {
+        try { localStorage.setItem(KEY, JSON.stringify(next)); } catch {}
+      }
+      return next;
+    });
+  }, [user]);
 
   const has = useCallback((id: string) => ids.includes(id), [ids]);
 

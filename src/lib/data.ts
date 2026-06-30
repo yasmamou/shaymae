@@ -101,6 +101,84 @@ const g = (slug: string, n: number, category: CategoryKey, label: string, before
   beforeAfter,
 });
 
+// Prestations par défaut selon la catégorie (pour les comptes importés d'Instagram)
+export const DEFAULT_SERVICES: Record<CategoryKey, Service[]> = {
+  cils: [
+    { name: "Volume Russe", duration: "2h", price: 79, popular: true },
+    { name: "Cil à cil", duration: "1h30", price: 65 },
+    { name: "Rehaussement de cils", duration: "1h", price: 55, popular: true },
+  ],
+  sourcils: [
+    { name: "Restructuration + teinture", duration: "45 min", price: 35, popular: true },
+    { name: "Microblading", duration: "2h", price: 250, popular: true },
+    { name: "Brow lift", duration: "45 min", price: 45 },
+  ],
+  ongles: [
+    { name: "Pose gel + nail art", duration: "1h30", price: 49, popular: true },
+    { name: "Semi-permanent", duration: "1h", price: 35 },
+    { name: "Remplissage", duration: "1h15", price: 42, popular: true },
+  ],
+  coiffure: [
+    { name: "Balayage", duration: "2h30", price: 110, popular: true },
+    { name: "Coupe & brushing", duration: "1h", price: 45 },
+    { name: "Coloration", duration: "2h", price: 75, popular: true },
+  ],
+  maquillage: [
+    { name: "Maquillage mariée + essai", duration: "2h", price: 190, popular: true },
+    { name: "Maquillage soirée", duration: "1h", price: 75 },
+    { name: "Cours auto-maquillage", duration: "1h30", price: 90 },
+  ],
+};
+
+/** Construit une créatrice à partir d'un compte Instagram réel (photos génériques). */
+function ig(p: {
+  slug: string; name: string; instagram: string; tagline: string;
+  categories: CategoryKey[]; city: string; mode: "salon" | "mobile";
+  lat: number; lng: number; address?: string; zones?: string[]; radiusKm?: number;
+  rating: number; reviews: number; bio: string; whatsapp?: string; verified?: boolean;
+}): Creator {
+  const base = p.categories[0];
+  const seedBase = p.slug.charCodeAt(0) + p.slug.charCodeAt(p.slug.length - 1);
+  return {
+    id: "ig-" + p.slug,
+    slug: p.slug,
+    name: p.name,
+    handle: "@" + p.instagram,
+    tagline: p.tagline,
+    categories: p.categories,
+    rating: p.rating,
+    reviews: p.reviews,
+    city: p.city,
+    region: "Montpellier",
+    mode: p.mode,
+    address: p.address,
+    zones: p.zones,
+    radiusKm: p.radiusKm,
+    lat: p.lat,
+    lng: p.lng,
+    bio: p.bio,
+    avatarSeed: seedBase % 360,
+    coverSeed: (seedBase * 7) % 360,
+    verified: p.verified ?? false,
+    whatsapp: p.whatsapp,
+    instagram: p.instagram,
+    booking: p.whatsapp ? ["instagram", "whatsapp"] : ["instagram"],
+    services: DEFAULT_SERVICES[base],
+    gallery: [
+      g(p.slug, 1, base, "Réalisation", true),
+      g(p.slug, 2, base, "Réalisation"),
+      g(p.slug, 3, p.categories[1] ?? base, "Réalisation"),
+      g(p.slug, 4, base, "Réalisation"),
+    ],
+    stories: [
+      { id: "s1", category: base, seed: seedBase % 360, caption: "Réalisation du jour ✨", kind: "realisation" },
+    ],
+    reviewsList: [
+      { author: "Cliente vérifiée", rating: 5, text: "Travail magnifique, je recommande les yeux fermés ✨", when: "récemment" },
+    ],
+  };
+}
+
 export const CREATORS: Creator[] = [
   {
     id: "c1",
@@ -661,6 +739,63 @@ export const CREATORS: Creator[] = [
     whatsapp: "33600000015",
     instagram: "browbar.mtp",
   },
+
+  // ── Comptes réels trouvés sur Instagram (Montpellier) — photos génériques ──
+  ig({
+    slug: "cilsglamour-montpellier", name: "Cils Glamour Montpellier", instagram: "cilsglamour_montpellier",
+    tagline: "Extensions de cils · depuis 2015", categories: ["cils"], city: "Montpellier", mode: "salon",
+    lat: 43.609, lng: 3.881, address: "Montpellier centre", rating: 4.9, reviews: 312, verified: true,
+    bio: "Spécialiste des extensions de cils à Montpellier depuis 2015. Volume russe, cil à cil, hybride. Retrouvez tout mon travail sur Instagram.",
+  }),
+  ig({
+    slug: "institut-m-beauty", name: "Institut M Beauty", instagram: "institutmbeauty",
+    tagline: "Extensions de cils & sourcils · Montpellier", categories: ["cils", "sourcils"], city: "Montpellier", mode: "salon",
+    lat: 43.610, lng: 3.8835, address: "Montpellier", rating: 4.8, reviews: 128,
+    bio: "Institut beauté du regard à Montpellier : extensions de cils, rehaussement, sourcils.",
+  }),
+  ig({
+    slug: "thais-nails", name: "Thaïs Nails", instagram: "nails.by.thais",
+    tagline: "Prothésiste ongulaire · Port Marianne", categories: ["ongles"], city: "Montpellier", mode: "salon",
+    lat: 43.6019, lng: 3.8967, address: "Port-Marianne, Montpellier", rating: 4.9, reviews: 204, verified: true,
+    bio: "Nail artist à Port-Marianne (Montpellier). Gel, semi-permanent, nail art. Réservation en ligne via le lien Instagram.",
+  }),
+  ig({
+    slug: "linstant-elegance", name: "L'Instant Élégance — Marine", instagram: "linstantelegance",
+    tagline: "Nail artist · ongles abîmés & rongés", categories: ["ongles"], city: "Montpellier", mode: "salon",
+    lat: 43.6106, lng: 3.8746, address: "14 rue Terral, 34000 Montpellier", rating: 4.9, reviews: 176, verified: true,
+    bio: "Spécialiste des ongles abîmés, rongés et accompagnement chimiothérapie. Gel semi-permanent et capsules américaines, 14 rue Terral à Montpellier.",
+  }),
+  ig({
+    slug: "nails-by-mimille", name: "Nails by Mimille", instagram: "nailsbymimille",
+    tagline: "Ongles · Castelnau-le-Lez", categories: ["ongles"], city: "Castelnau-le-Lez", mode: "salon",
+    lat: 43.633, lng: 3.903, address: "Castelnau-le-Lez (Montpellier)", rating: 4.8, reviews: 241,
+    bio: "Prothésiste ongulaire à Castelnau-le-Lez. Réservation via le lien en bio Instagram.",
+  }),
+  ig({
+    slug: "atelier-du-sourcil-mtp", name: "Atelier du Sourcil Montpellier", instagram: "atelierdusourcil_montpellier",
+    tagline: "Sourcils & microblading", categories: ["sourcils", "maquillage"], city: "Montpellier", mode: "salon",
+    lat: 43.6088, lng: 3.880, address: "Montpellier centre", rating: 4.8, reviews: 156, verified: true,
+    bio: "L'expert du sourcil à Montpellier : restructuration, microblading, microshading, teinture.",
+  }),
+  ig({
+    slug: "ad-makeup-delphine", name: "Delphine Jouet — AD Makeup", instagram: "ad.makeup._",
+    tagline: "Maquilleuse pro · mariage (5/5 Google)", categories: ["maquillage", "cils"], city: "Montpellier", mode: "mobile",
+    lat: 43.611, lng: 3.877, zones: ["Montpellier", "Nîmes", "Lattes", "Castelnau-le-Lez"], radiusKm: 30,
+    rating: 5.0, reviews: 98, verified: true,
+    bio: "Maquilleuse professionnelle diplômée, spécialisée mariage, notée 5/5 sur Google. Je me déplace sur Montpellier et Nîmes.",
+  }),
+  ig({
+    slug: "sophie-b-montpellier", name: "Sophie B", instagram: "sophieb_montpellier",
+    tagline: "Spécialiste du blond & extensions", categories: ["coiffure"], city: "Montpellier", mode: "salon",
+    lat: 43.6075, lng: 3.876, address: "Montpellier", rating: 4.8, reviews: 187, verified: true,
+    bio: "Spécialiste du blond depuis plus de 30 ans : blond signature, balayage et extensions à Montpellier.",
+  }),
+  ig({
+    slug: "la-loge-ingrid-maury", name: "La Loge — Ingrid Maury", instagram: "lalogehairstyle",
+    tagline: "Coloriste · balayage (Redken France)", categories: ["coiffure"], city: "Montpellier", mode: "salon",
+    lat: 43.6095, lng: 3.885, address: "Montpellier", rating: 4.9, reviews: 143, verified: true,
+    bio: "Artiste Redken France, experte balayage, couleur et soins du cheveu à Montpellier.",
+  }),
 ];
 
 export const getCreator = (slug: string) =>
@@ -683,6 +818,10 @@ export const FEED: FeedItem[] = [
   { id: "fm3", creatorSlug: "nails-marianne", media: gal("nails-marianne", 0), caption: "Chrome glaze à Port Marianne 💅 La tendance ongles du moment.", likes: 1644 },
   { id: "fm4", creatorSlug: "blond-atelier-mtp", media: gal("blond-atelier-mtp", 0), caption: "Balayage blond polaire dans l'Écusson ✨ Du brun au blond en une séance.", likes: 1320 },
   { id: "fm5", creatorSlug: "brow-bar-mtp", media: gal("brow-bar-mtp", 0), caption: "Brow lamination à domicile à Montpellier 🤎 Sourcils peignés, zéro effort.", likes: 988 },
+  { id: "fi1", creatorSlug: "cilsglamour-montpellier", media: gal("cilsglamour-montpellier", 0), caption: "Volume russe signature ✨ Cils Glamour Montpellier · @cilsglamour_montpellier", likes: 3120 },
+  { id: "fi2", creatorSlug: "thais-nails", media: gal("thais-nails", 0), caption: "Set du jour à Port-Marianne 💅 Thaïs Nails · @nails.by.thais", likes: 2240 },
+  { id: "fi3", creatorSlug: "ad-makeup-delphine", media: gal("ad-makeup-delphine", 0), caption: "Mariée du week-end 👰 Delphine AD Makeup · @ad.makeup._", likes: 2890 },
+  { id: "fi4", creatorSlug: "sophie-b-montpellier", media: gal("sophie-b-montpellier", 0), caption: "Blond signature & balayage ✨ Sophie B · @sophieb_montpellier", likes: 1760 },
   { id: "f1", creatorSlug: "sarah-beauty", media: CREATORS[0].gallery[0], caption: "Volume russe glamour pour un regard de biche 🦌 Tenue garantie 4 semaines.", likes: 1243 },
   { id: "f2", creatorSlug: "studio-lumi", media: CREATORS[1].gallery[0], caption: "Du brun au blond polaire en une séance ✨ Glissez pour voir la transformation.", likes: 2087 },
   { id: "f3", creatorSlug: "nails-by-jade", media: CREATORS[2].gallery[0], caption: "Chrome glazed donut 🍩 La tendance ongles de la saison, à domicile.", likes: 1762 },

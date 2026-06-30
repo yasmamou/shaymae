@@ -8,6 +8,7 @@ import type {
 // ── Catalogue : créatrices (référence, seedée depuis les données mock) ──
 export const creators = pgTable("creators", {
   slug: text("slug").primaryKey(),
+  ownerUserId: uuid("owner_user_id"),
   name: text("name").notNull(),
   handle: text("handle").notNull(),
   tagline: text("tagline").notNull(),

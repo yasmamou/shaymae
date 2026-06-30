@@ -66,11 +66,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .then((d) => setUser(d.user ?? null))
       .catch(() => {})
       .finally(() => setReady(true));
-    try {
-      const p = localStorage.getItem(PKEY);
-      if (p) setPosts(JSON.parse(p));
-    } catch {}
   }, []);
+
+  // Publications : DB si connectée, sinon localStorage
+  useEffect(() => {
+    if (!ready) return;
+    if (user) {
+      fetch("/api/posts")
+        .then((r) => r.json())
+        .then((d: { posts: { id: string; category: CategoryKey; label: string; caption: string | null; seed: number }[] }) =>
+          setPosts((d.posts ?? []).map((p, i) => ({
+            id: p.id, category: p.category, label: p.label, caption: p.caption ?? "", seed: p.seed, createdAt: i,
+          })))
+        )
+        .catch(() => {});
+    } else {
+      try {
+        const p = localStorage.getItem(PKEY);
+        setPosts(p ? JSON.parse(p) : []);
+      } catch {}
+    }
+  }, [ready, user]);
 
   const signUp = useCallback(async (p: SignUpPayload): Promise<AuthResult> => {
     const res = await fetch("/api/auth/signup", {
@@ -105,19 +121,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser((prev) => (prev ? { ...prev, ...patch } : prev));
   }, []);
 
-  const addPost = useCallback((p: Omit<StudioPost, "id" | "createdAt">) =>
-    setPosts((prev) => {
-      const next = [{ ...p, id: "post-" + prev.length + "-" + p.seed, createdAt: prev.length }, ...prev];
-      localStorage.setItem(PKEY, JSON.stringify(next));
-      return next;
-    }), []);
+  const addPost = useCallback((p: Omit<StudioPost, "id" | "createdAt">) => {
+    if (user) {
+      fetch("/api/posts", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(p),
+      })
+        .then((r) => r.json())
+        .then((d) => { if (d.post) setPosts((prev) => [{ ...p, id: d.post.id, createdAt: prev.length }, ...prev]); })
+        .catch(() => {});
+    } else {
+      setPosts((prev) => {
+        const next = [{ ...p, id: "post-" + prev.length + "-" + p.seed, createdAt: prev.length }, ...prev];
+        try { localStorage.setItem(PKEY, JSON.stringify(next)); } catch {}
+        return next;
+      });
+    }
+  }, [user]);
 
-  const removePost = useCallback((id: string) =>
+  const removePost = useCallback((id: string) => {
     setPosts((prev) => {
       const next = prev.filter((x) => x.id !== id);
-      localStorage.setItem(PKEY, JSON.stringify(next));
+      if (user) fetch(`/api/posts/${id}`, { method: "DELETE" }).catch(() => {});
+      else try { localStorage.setItem(PKEY, JSON.stringify(next)); } catch {}
       return next;
-    }), []);
+    });
+  }, [user]);
 
   return (
     <Ctx.Provider value={{ user, ready, signUp, signIn, signOut, updateUser, posts, addPost, removePost }}>
