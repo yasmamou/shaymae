@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { useAuth } from "./AuthProvider";
 
 export interface Reservation {
   id: string;
@@ -9,76 +10,72 @@ export interface Reservation {
   serviceName: string;
   price: number;
   deposit: number;
-  date: string; // yyyy-mm-dd
-  slot: string; // HH:MM
+  date: string;
+  slot: string;
   firstName: string;
-  lastName: string;
-  phone: string;
+  lastName: string | null;
+  phone: string | null;
   status: "confirmé" | "annulé";
-  createdAt: number;
+  createdAt: string;
 }
+
+export type BookInput = Omit<Reservation, "id" | "status" | "createdAt">;
+type BookResult = { ok: true; reservation: Reservation } | { ok: false; error: string };
 
 interface BookingsCtx {
   reservations: Reservation[];
   ready: boolean;
-  book: (r: Omit<Reservation, "id" | "status" | "createdAt">) => Reservation;
-  cancel: (id: string) => void;
-  waitlist: string[]; // "slug|date"
-  toggleWaitlist: (key: string) => void;
+  refresh: () => Promise<void>;
+  book: (r: BookInput) => Promise<BookResult>;
+  cancel: (id: string) => Promise<void>;
 }
 
 const Ctx = createContext<BookingsCtx | null>(null);
-const KEY = "shaymae:reservations";
-const WKEY = "shaymae:waitlist";
 
 export function BookingsProvider({ children }: { children: React.ReactNode }) {
+  const { user, ready: authReady } = useAuth();
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const [waitlist, setWaitlist] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
 
-  useEffect(() => {
+  const refresh = useCallback(async () => {
     try {
-      const r = localStorage.getItem(KEY);
-      if (r) setReservations(JSON.parse(r));
-      const w = localStorage.getItem(WKEY);
-      if (w) setWaitlist(JSON.parse(w));
-    } catch {}
-    setReady(true);
+      const r = await fetch("/api/reservations");
+      const d = await r.json();
+      setReservations(d.reservations ?? []);
+    } catch {
+      setReservations([]);
+    }
   }, []);
 
-  const book: BookingsCtx["book"] = useCallback((r) => {
-    const res: Reservation = {
-      ...r,
-      id: "res-" + r.creatorSlug + "-" + r.date + "-" + r.slot.replace(":", ""),
-      status: "confirmé",
-      createdAt: Date.parse(r.date + "T" + r.slot + ":00Z") || 0,
-    };
-    setReservations((prev) => {
-      const next = [res, ...prev.filter((x) => x.id !== res.id)];
-      localStorage.setItem(KEY, JSON.stringify(next));
-      return next;
+  useEffect(() => {
+    if (!authReady) return;
+    if (user) {
+      refresh().finally(() => setReady(true));
+    } else {
+      setReservations([]);
+      setReady(true);
+    }
+  }, [authReady, user, refresh]);
+
+  const book = useCallback(async (r: BookInput): Promise<BookResult> => {
+    const res = await fetch("/api/reservations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(r),
     });
-    return res;
+    const data = await res.json();
+    if (!res.ok) return { ok: false, error: data.error ?? "Réservation impossible" };
+    setReservations((prev) => [data.reservation, ...prev]);
+    return { ok: true, reservation: data.reservation };
   }, []);
 
-  const cancel = useCallback((id: string) => {
-    setReservations((prev) => {
-      const next = prev.map((r) => (r.id === id ? { ...r, status: "annulé" as const } : r));
-      localStorage.setItem(KEY, JSON.stringify(next));
-      return next;
-    });
-  }, []);
-
-  const toggleWaitlist = useCallback((key: string) => {
-    setWaitlist((prev) => {
-      const next = prev.includes(key) ? prev.filter((x) => x !== key) : [key, ...prev];
-      localStorage.setItem(WKEY, JSON.stringify(next));
-      return next;
-    });
+  const cancel = useCallback(async (id: string) => {
+    setReservations((prev) => prev.map((x) => (x.id === id ? { ...x, status: "annulé" } : x)));
+    await fetch(`/api/reservations/${id}`, { method: "PATCH" });
   }, []);
 
   return (
-    <Ctx.Provider value={{ reservations, ready, book, cancel, waitlist, toggleWaitlist }}>
+    <Ctx.Provider value={{ reservations, ready, refresh, book, cancel }}>
       {children}
     </Ctx.Provider>
   );

@@ -1,18 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { getFormation } from "@/lib/data";
 import { Media } from "@/lib/Media";
 import { useBookings } from "@/components/BookingsProvider";
+import { useAuth } from "@/components/AuthProvider";
 
 const SESSIONS = ["Sam 21 juin", "Sam 5 juil.", "Lun 14 juil."];
 
 export default function FormationDetail() {
   const { slug } = useParams<{ slug: string }>();
+  const router = useRouter();
   const f = getFormation(slug);
   const { book } = useBookings();
+  const { user } = useAuth();
   const [session, setSession] = useState(0);
   const [done, setDone] = useState(false);
 
@@ -76,13 +79,15 @@ export default function FormationDetail() {
       {/* CTA */}
       <div className="fixed inset-x-0 bottom-24 z-30 mx-auto w-full max-w-[480px] px-5 lg:bottom-5">
         <button
-          onClick={() => {
-            book({
+          onClick={async () => {
+            if (!user) { router.push("/connexion"); return; }
+            const res = await book({
               creatorSlug: f.slug, creatorName: f.trainer, serviceName: `Formation : ${f.title}`,
               price: f.price, deposit: Math.round(f.price * 0.3),
-              date: "2026-06-21", slot: "09:00", firstName: "", lastName: "", phone: "",
+              date: "2026-06-21", slot: "09:00", firstName: user.name?.split(" ")[0] ?? "", lastName: "", phone: "",
             });
-            setDone(true);
+            if (res.ok) setDone(true);
+            else alert(res.error);
           }}
           className="flex w-full items-center justify-between rounded-full bg-gradient-to-r from-rose-deep to-or-rose px-5 py-4 text-sm font-bold text-white shadow-soft">
           <span>{done ? "✅ Inscription enregistrée" : `Réserver · ${SESSIONS[session]}`}</span>

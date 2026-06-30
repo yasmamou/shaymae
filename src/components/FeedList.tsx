@@ -17,8 +17,8 @@ export function FeedList() {
     },
     author: {
       name: user?.name ?? "Votre studio",
-      city: user?.city,
-      mode: user?.mode,
+      city: user?.city ?? undefined,
+      mode: user?.mode === "mobile" ? "mobile" : user?.mode === "salon" ? "salon" : undefined,
       badge: "Votre publication",
       profileHref: "/studio",
     },

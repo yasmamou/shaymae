@@ -13,10 +13,13 @@ export default function InscriptionPage() {
   const [role, setRole] = useState<Role>("cliente");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [city, setCity] = useState("Montpellier");
   const [handle, setHandle] = useState("");
   const [mode, setMode] = useState<"salon" | "mobile">("salon");
   const [cats, setCats] = useState<CategoryKey[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const toggleCat = (k: CategoryKey) =>
     setCats((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
@@ -57,23 +60,28 @@ export default function InscriptionPage() {
 
         <form
           className="mt-5 space-y-4"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            signUp({
+            setError("");
+            setLoading(true);
+            const res = await signUp({
               name,
               email,
+              password,
               role,
               city,
               ...(role === "creatrice"
                 ? { handle: handle || "@" + name.toLowerCase().replace(/\s/g, ""), categories: cats, mode }
                 : {}),
             });
-            router.push(role === "creatrice" ? "/studio" : "/");
+            setLoading(false);
+            if (res.ok) router.push(role === "creatrice" ? "/studio" : "/");
+            else setError(res.error);
           }}
         >
           <Field label={role === "creatrice" ? "Nom / Nom du studio" : "Prénom"} value={name} onChange={setName} placeholder={role === "creatrice" ? "Sarah Beauty" : "Camille"} required />
           <Field label="Email" type="email" value={email} onChange={setEmail} placeholder="vous@email.com" required />
-          <Field label="Mot de passe" type="password" value="" onChange={() => {}} placeholder="••••••••" />
+          <Field label="Mot de passe" type="password" value={password} onChange={setPassword} placeholder="6 caractères minimum" required />
           <Field label="Ville" value={city} onChange={setCity} placeholder="Montpellier" />
 
           {role === "creatrice" && (
@@ -118,8 +126,9 @@ export default function InscriptionPage() {
             </>
           )}
 
-          <button className="w-full rounded-full bg-gradient-to-r from-rose-deep to-or-rose py-3.5 text-sm font-bold text-white shadow-soft">
-            {role === "creatrice" ? "Créer mon espace créatrice" : "Créer mon compte"}
+          {error && <p className="rounded-xl bg-rose/40 px-3 py-2 text-[13px] font-medium text-ink">{error}</p>}
+          <button disabled={loading} className="w-full rounded-full bg-gradient-to-r from-rose-deep to-or-rose py-3.5 text-sm font-bold text-white shadow-soft disabled:opacity-60">
+            {loading ? "Création…" : role === "creatrice" ? "Créer mon espace créatrice" : "Créer mon compte"}
           </button>
         </form>
 
@@ -131,7 +140,7 @@ export default function InscriptionPage() {
         </p>
       </div>
       <p className="mt-4 text-center text-[11px] text-ink-soft">
-        Démo — données simulées localement, aucun serveur.
+        Votre compte est enregistré de façon sécurisée (mot de passe chiffré).
       </p>
     </div>
   );

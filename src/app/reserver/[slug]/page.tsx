@@ -32,6 +32,7 @@ function ReserverInner() {
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [done, setDone] = useState<null | { date: string; slot: string }>(null);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const d = new Date();
@@ -192,18 +193,22 @@ function ReserverInner() {
       {/* CTA sticky */}
       <div className="fixed inset-x-0 bottom-24 z-30 mx-auto w-full max-w-[480px] px-5 lg:bottom-5 lg:max-w-2xl lg:px-0">
         <button
-          disabled={!canConfirm}
-          onClick={() => {
-            book({
+          disabled={saving || (!!user && !canConfirm)}
+          onClick={async () => {
+            if (!user) { router.push("/connexion"); return; }
+            setSaving(true);
+            const res = await book({
               creatorSlug: creator.slug, creatorName: creator.name,
               serviceName: service.name, price: service.price, deposit,
               date, slot, firstName, lastName, phone,
             });
-            setDone({ date, slot });
+            setSaving(false);
+            if (res.ok) setDone({ date, slot });
+            else alert(res.error);
           }}
           className="flex w-full items-center justify-between rounded-full bg-gradient-to-r from-rose-deep to-or-rose px-5 py-4 text-sm font-bold text-white shadow-soft disabled:opacity-50 lg:mx-auto lg:max-w-md"
         >
-          <span>{canConfirm ? `Confirmer · ${prettyShort(date)} ${slot}` : "Complétez votre réservation"}</span>
+          <span>{!user ? "Connectez-vous pour réserver" : saving ? "Réservation…" : canConfirm ? `Confirmer · ${prettyShort(date)} ${slot}` : "Complétez votre réservation"}</span>
           <span>{service.price}.–</span>
         </button>
       </div>

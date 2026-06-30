@@ -10,6 +10,9 @@ export default function ConnexionPage() {
   const { signIn } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col justify-center px-6 pb-32 pt-10">
@@ -24,16 +27,21 @@ export default function ConnexionPage() {
 
         <form
           className="mt-6 space-y-4"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            signIn(email);
-            router.push("/");
+            setError("");
+            setLoading(true);
+            const res = await signIn(email, password);
+            setLoading(false);
+            if (res.ok) router.push("/");
+            else setError(res.error);
           }}
         >
           <Field label="Email" type="email" value={email} onChange={setEmail} placeholder="vous@email.com" required />
-          <Field label="Mot de passe" type="password" value="" onChange={() => {}} placeholder="••••••••" />
-          <button className="w-full rounded-full bg-gradient-to-r from-rose-deep to-or-rose py-3.5 text-sm font-bold text-white shadow-soft">
-            Se connecter
+          <Field label="Mot de passe" type="password" value={password} onChange={setPassword} placeholder="••••••••" required />
+          {error && <p className="rounded-xl bg-rose/40 px-3 py-2 text-[13px] font-medium text-ink">{error}</p>}
+          <button disabled={loading} className="w-full rounded-full bg-gradient-to-r from-rose-deep to-or-rose py-3.5 text-sm font-bold text-white shadow-soft disabled:opacity-60">
+            {loading ? "Connexion…" : "Se connecter"}
           </button>
         </form>
 
@@ -44,9 +52,6 @@ export default function ConnexionPage() {
           </Link>
         </p>
       </div>
-      <p className="mt-4 text-center text-[11px] text-ink-soft">
-        Démo — l&apos;authentification est simulée localement, aucune donnée n&apos;est envoyée.
-      </p>
     </div>
   );
 }
