@@ -67,9 +67,12 @@ Base **Neon Postgres** (Vercel) + **Drizzle ORM** posés. Déjà réels & persis
 - [x] **Auth réelle** (email + mot de passe chiffré bcrypt, session httpOnly) + rôles cliente/pro → `/api/auth/*`
 - [x] **Réservations en base** (créer/lister/annuler, scoping par utilisateur) → `/api/reservations`
 
-Reste à brancher sur la base / à ajouter :
-- [ ] Migrer **messages, follows, favoris, publications studio** (encore en `localStorage`) vers la DB + API
-- [ ] **Upload média** réel (photos/vidéos des pros) — Vercel Blob — au lieu des photos Unsplash
+- [x] **Messages, follows, favoris, publications studio** migrés en DB (API) + repli localStorage hors connexion
+- [x] **Espace pro réel** : profil public éditable en base (auto-créé), prestations/tarifs CRUD, agenda alimenté par les vraies réservations, stats/clientes réelles ; profil public `/pro/[slug]` servi depuis la DB
+- [x] **9 vraies créatrices Montpellier** (comptes Instagram réels : pseudo + lien) ajoutées au catalogue
+
+Reste à ajouter :
+- [ ] **Upload média** réel (photos/vidéos des pros) — Vercel Blob — au lieu des photos génériques
 - [ ] **Paiements** / acomptes (Stripe) + politique d'annulation appliquée
 - [ ] **Notifications** réelles : email / SMS / push (confirmation, rappel J-1) — Resend/Twilio
 - [ ] **Temps réel** : messagerie & disponibilités (websockets / polling)
