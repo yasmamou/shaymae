@@ -61,18 +61,19 @@ La partie pro est aujourd'hui une **maquette** : il faut la rendre vraiment util
 - [ ] **Collaboratrices** : agendas séparés + accès limité
 - [ ] **Stats** calculées sur les vraies données
 
-### 🔴 P2 — Le **backend** (le vrai manque structurel)
-Sans lui, la plateforme reste une démo locale.
-- [ ] **Auth réelle** (email + mot de passe / OAuth) et rôles cliente/pro
-- [ ] **Base de données** (créatrices, prestations, réservations, messages, avis)
-- [ ] **Upload média** réel (photos/vidéos des pros) au lieu des photos Unsplash
-- [ ] **Paiements** / acomptes (Stripe) + politique d'annulation appliquée
-- [ ] **Notifications** réelles : email / SMS / push (confirmation, rappel J-1)
-- [ ] **Temps réel** : messagerie et disponibilités (websockets)
-- [ ] **Liste d'attente** automatique réellement déclenchée
+### 🟢/🔴 P2 — Le **backend** (en cours)
+Base **Neon Postgres** (Vercel) + **Drizzle ORM** posés. Déjà réels & persistants :
+- [x] **Base de données** (schéma users/sessions/creators/formations/reservations/messages/follows/favorites/posts) + **seed** du catalogue
+- [x] **Auth réelle** (email + mot de passe chiffré bcrypt, session httpOnly) + rôles cliente/pro → `/api/auth/*`
+- [x] **Réservations en base** (créer/lister/annuler, scoping par utilisateur) → `/api/reservations`
 
-> Recommandation Vercel : base **Neon Postgres** + **auth (Clerk)** + **Vercel Blob**
-> (upload) + **Stripe** + **Resend/Twilio** (notifs). Toutes intégrables via le Marketplace.
+Reste à brancher sur la base / à ajouter :
+- [ ] Migrer **messages, follows, favoris, publications studio** (encore en `localStorage`) vers la DB + API
+- [ ] **Upload média** réel (photos/vidéos des pros) — Vercel Blob — au lieu des photos Unsplash
+- [ ] **Paiements** / acomptes (Stripe) + politique d'annulation appliquée
+- [ ] **Notifications** réelles : email / SMS / push (confirmation, rappel J-1) — Resend/Twilio
+- [ ] **Temps réel** : messagerie & disponibilités (websockets / polling)
+- [ ] **Liste d'attente** automatique réellement déclenchée
 
 ### 🟠 P3 — Recherche & découverte « intelligentes »
 - [ ] Vrai calcul **distance / temps de trajet** + tri « plus proches / plus dispo »
@@ -102,8 +103,10 @@ Sans lui, la plateforme reste une démo locale.
 | Phase | Objectif | Contenu |
 |------|----------|---------|
 | **0 — fait** | Démo front complète | Clientes + social + maquette pro + i18n |
-| **1** | **Espace pro réel (local)** | CRUD profil/prestations/horaires/dispos, agenda relié aux réservations locales |
-| **2** | **Backend & auth** | DB + auth + rôles → données partagées et persistantes |
+| **2a — fait** | **Backend : DB + auth + réservations** | Neon + Drizzle, comptes réels, réservations persistées |
+| **2b** | **Backend (suite)** | Migrer messages/follows/favoris/posts en DB, upload média (Blob) |
+| **1** | **Espace pro réel** | CRUD profil/prestations/horaires/dispos, agenda relié aux vraies réservations |
+| **3** | **Paiements** | Stripe (acomptes) + politique d'annulation |
 | **3** | **Média & paiements** | Upload réel + Stripe (acomptes) + politique d'annulation |
 | **4** | **Notifications & temps réel** | Email/SMS/push, messagerie & dispos live, liste d'attente |
 | **5** | **Intelligence** | Distance/trajet, suggestions, recherche avancée |
@@ -113,6 +116,9 @@ Sans lui, la plateforme reste une démo locale.
 ---
 
 ## 6. 👉 Prochaine étape immédiate
-**Phase 1 — rendre l'espace prestataire réellement utilisable** (édition profil,
-prestations, horaires, disponibilités, agenda relié aux vraies réservations),
-toujours en `localStorage` pour rester rapide, **avant** d'attaquer le backend (Phase 2).
+Le **socle backend est en place** (Neon + Drizzle + auth + réservations, en prod).
+Suite recommandée :
+1. **Migrer le reste des données en DB** (messages, follows, favoris, publications studio).
+2. **Upload média réel** (Vercel Blob) pour que les pros publient leurs vraies photos.
+3. **Espace pro réel** (CRUD prestations/horaires/dispos) relié aux vraies réservations.
+4. **Paiements** (Stripe) pour les acomptes.
