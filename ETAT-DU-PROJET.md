@@ -69,6 +69,7 @@ Base **Neon Postgres** (Vercel) + **Drizzle ORM** posés. Déjà réels & persis
 
 - [x] **Messages, follows, favoris, publications studio** migrés en DB (API) + repli localStorage hors connexion
 - [x] **Espace pro réel** : profil public éditable en base (auto-créé), prestations/tarifs CRUD, agenda alimenté par les vraies réservations, stats/clientes réelles ; profil public `/pro/[slug]` servi depuis la DB
+- [x] **Dashboard entreprise** : demandes de RDV (confirmer/refuser/terminer/absente), **planning & disponibilités réelles** (jours, horaires, durée créneau, congés) reliées à la réservation cliente ; RDV créés « en attente », statuts affichés côté cliente
 - [x] **9 vraies créatrices Montpellier** (comptes Instagram réels : pseudo + lien) ajoutées au catalogue
 
 Reste à ajouter :
