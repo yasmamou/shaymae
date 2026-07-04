@@ -1,9 +1,9 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { getCreator, availabilityFor, type DaySlots } from "@/lib/data";
+import { getCreator, type DaySlots } from "@/lib/data";
 import { Avatar } from "@/lib/Media";
 import { useBookings } from "@/components/BookingsProvider";
 import { useAuth } from "@/components/AuthProvider";
@@ -33,6 +33,7 @@ function ReserverInner() {
   const [phone, setPhone] = useState("");
   const [done, setDone] = useState<null | { date: string; slot: string }>(null);
   const [saving, setSaving] = useState(false);
+  const [days, setDays] = useState<DaySlots[]>([]);
 
   useEffect(() => {
     const d = new Date();
@@ -45,13 +46,13 @@ function ReserverInner() {
       setFirstName(parts[0] ?? "");
       setLastName(parts.slice(1).join(" "));
     }
+    // vraies disponibilités (planning de la créatrice − créneaux déjà pris)
+    fetch(`/api/creators/${slug}/availability?days=14`)
+      .then((r) => r.json())
+      .then((d) => setDays(d.days ?? []))
+      .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const days: DaySlots[] = useMemo(
-    () => (creator && fromMs ? availabilityFor(creator, fromMs, 7) : []),
-    [creator, fromMs]
-  );
 
   if (!creator) {
     return (
@@ -68,8 +69,8 @@ function ReserverInner() {
   if (done) {
     return (
       <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col items-center justify-center px-6 pb-32 text-center">
-        <span className="mb-3 text-6xl">🎉</span>
-        <h1 className="font-display text-3xl font-semibold text-ink">Réservation confirmée</h1>
+        <span className="mb-3 text-6xl">⏳</span>
+        <h1 className="font-display text-3xl font-semibold text-ink">Demande envoyée</h1>
         <p className="mt-2 text-sm text-ink-soft">
           {service.name} chez <b>{creator.name}</b><br />
           {prettyDate(done.date)} à {done.slot}
@@ -78,11 +79,11 @@ function ReserverInner() {
           <Line label="Prestation" value={service.name} />
           <Line label="Durée" value={service.duration} />
           <Line label="Prix" value={`${service.price}.–`} />
-          <Line label="Acompte versé" value={`${deposit}.– (simulé)`} />
+          <Line label="Acompte (à la confirmation)" value={`${deposit}.– (simulé)`} />
           <Line label="Au nom de" value={`${firstName} ${lastName}`.trim()} />
         </div>
         <p className="mt-3 text-[12px] text-ink-soft">
-          📩 Confirmation et rappel envoyés (simulé). Annulation gratuite jusqu&apos;à 24h avant.
+          ⏳ En attente de confirmation par {creator.name.split(" ")[0]}. Vous serez notifiée (simulé).
         </p>
         <div className="mt-6 flex w-full flex-col gap-2.5">
           <Link href="/rendez-vous" className="rounded-full bg-gradient-to-r from-rose-deep to-or-rose py-3.5 text-sm font-bold text-white shadow-soft">
@@ -131,7 +132,7 @@ function ReserverInner() {
 
       {/* 2. Date & créneau */}
       <Section step={2} title="Choisissez un créneau">
-        {!fromMs ? (
+        {days.length === 0 ? (
           <p className="text-sm text-ink-soft">Chargement des disponibilités…</p>
         ) : (
           <>

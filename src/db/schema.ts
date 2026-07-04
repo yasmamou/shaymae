@@ -4,6 +4,7 @@ import {
 import type {
   Service, MediaItem, Story, Review, BookingMode, CategoryKey,
 } from "@/lib/data";
+import type { Availability } from "@/lib/availability";
 
 // ── Catalogue : créatrices (référence, seedée depuis les données mock) ──
 export const creators = pgTable("creators", {
@@ -34,6 +35,7 @@ export const creators = pgTable("creators", {
   gallery: jsonb("gallery").$type<MediaItem[]>().notNull(),
   stories: jsonb("stories").$type<Story[]>().notNull(),
   reviewsList: jsonb("reviews_list").$type<Review[]>().notNull(),
+  availability: jsonb("availability").$type<Availability>(),
 });
 
 export const formations = pgTable("formations", {

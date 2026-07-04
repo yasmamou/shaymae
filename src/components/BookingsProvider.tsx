@@ -15,7 +15,7 @@ export interface Reservation {
   firstName: string;
   lastName: string | null;
   phone: string | null;
-  status: "confirmé" | "annulé";
+  status: string;
   createdAt: string;
 }
 

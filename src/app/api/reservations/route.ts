@@ -45,7 +45,7 @@ export async function POST(req: Request) {
       firstName: String(b.firstName ?? ""),
       lastName: b.lastName ? String(b.lastName) : null,
       phone: b.phone ? String(b.phone) : null,
-      status: "confirmé",
+      status: "en attente",
     })
     .returning();
 

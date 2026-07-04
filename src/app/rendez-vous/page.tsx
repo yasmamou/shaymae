@@ -35,18 +35,18 @@ export default function RendezVousPage() {
       <div className="flex flex-col gap-3">
         {reservations.map((r) => {
           const creator = getCreator(r.creatorSlug);
-          const cancelled = r.status === "annulé";
+          const dim = ["annulé", "refusé", "absent"].includes(r.status);
+          const canCancel = r.status === "en attente" || r.status === "confirmé";
+          const badge = STATUS_BADGE[r.status] ?? { label: r.status, cls: "bg-line text-ink-soft" };
           return (
-            <div key={r.id} className={`rounded-3xl border border-line bg-blanc/80 p-4 shadow-float ${cancelled ? "opacity-60" : ""}`}>
+            <div key={r.id} className={`rounded-3xl border border-line bg-blanc/80 p-4 shadow-float ${dim ? "opacity-60" : ""}`}>
               <div className="flex items-center gap-3">
                 {creator && <Avatar seed={creator.avatarSeed} category={creator.categories[0]} name={creator.name} size={44} />}
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-bold text-ink">{r.serviceName}</p>
                   <p className="truncate text-[12px] text-ink-soft">{r.creatorName} · {prettyDate(r.date)} · {r.slot}</p>
                 </div>
-                <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${cancelled ? "bg-line text-ink-soft" : "bg-sauge/60 text-ink"}`}>
-                  {cancelled ? "Annulé" : "Confirmé"}
-                </span>
+                <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${badge.cls}`}>{badge.label}</span>
               </div>
               <div className="mt-3 flex items-center gap-2">
                 <Link
@@ -60,7 +60,7 @@ export default function RendezVousPage() {
                     ✉
                   </Link>
                 )}
-                {!cancelled && (
+                {canCancel && (
                   <button onClick={() => cancel(r.id)} className="rounded-full border border-line px-4 py-2.5 text-[13px] font-semibold text-ink-soft">
                     Annuler
                   </button>
@@ -73,6 +73,15 @@ export default function RendezVousPage() {
     </div>
   );
 }
+
+const STATUS_BADGE: Record<string, { label: string; cls: string }> = {
+  "en attente": { label: "⏳ En attente", cls: "bg-champagne/40 text-ink" },
+  "confirmé": { label: "✓ Confirmé", cls: "bg-sauge/60 text-ink" },
+  "terminé": { label: "Terminé", cls: "bg-creme text-ink-soft" },
+  "refusé": { label: "Refusé", cls: "bg-line text-ink-soft" },
+  "annulé": { label: "Annulé", cls: "bg-line text-ink-soft" },
+  "absent": { label: "Absente", cls: "bg-line text-ink-soft" },
+};
 
 function prettyDate(iso: string) {
   const d = new Date(iso + "T00:00:00Z");
