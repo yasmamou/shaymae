@@ -8,6 +8,12 @@ import { users, sessions, type DbUser } from "@/db/schema";
 const COOKIE = "shaymae_session";
 const MAX_AGE = 60 * 60 * 24 * 30; // 30 jours
 
+// Emails ayant automatiquement le rôle admin (propriétaire de la plateforme).
+export const ADMIN_EMAILS = (process.env.ADMIN_EMAILS ?? "yasmamou@hotmail.fr")
+  .split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
+
+export const isAdminEmail = (email: string) => ADMIN_EMAILS.includes(email.toLowerCase());
+
 export type PublicUser = Omit<DbUser, "passwordHash">;
 
 export function toPublic(u: DbUser): PublicUser {

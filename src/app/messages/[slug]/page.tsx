@@ -4,33 +4,40 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { useMessages } from "@/components/MessagesProvider";
+import { useAuth } from "@/components/AuthProvider";
 import { getCreator } from "@/lib/data";
 import { Media, Avatar } from "@/lib/Media";
-
-const REPLIES = [
-  "Avec plaisir ✨ je vous réserve ce créneau !",
-  "Très bonne idée, ça va être sublime 😍",
-  "Je vous envoie un petit aperçu juste après 👌",
-  "Oui c'est tout à fait possible, on en parle au rendez-vous ?",
-];
 
 export default function ThreadPage() {
   const { slug } = useParams<{ slug: string }>();
   const { getThread, send, ensureThread } = useMessages();
+  const { user, ready } = useAuth();
   const creator = getCreator(slug);
   const [text, setText] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
   const messages = getThread(slug);
 
-  useEffect(() => { ensureThread(slug); }, [slug, ensureThread]);
+  useEffect(() => { if (user) ensureThread(slug); }, [slug, ensureThread, user]);
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages.length]);
+
+  if (ready && !user) {
+    return (
+      <div className="mx-auto flex min-h-[100dvh] max-w-md flex-col items-center justify-center px-8 pb-32 text-center">
+        <span className="mb-4 text-6xl">✉️</span>
+        <h1 className="font-display text-2xl font-semibold text-ink">Connectez-vous pour écrire</h1>
+        <p className="mt-2 max-w-xs text-sm text-ink-soft">Créez un compte ou connectez-vous pour envoyer un message{creator ? ` à ${creator.name}` : ""}.</p>
+        <div className="mt-6 flex w-full max-w-xs flex-col gap-2.5">
+          <Link href="/connexion" className="rounded-full bg-gradient-to-r from-rose-deep to-or-rose py-3.5 text-sm font-bold text-white shadow-soft">Se connecter</Link>
+          <Link href="/inscription" className="rounded-full glass border border-white/60 py-3.5 text-sm font-bold text-ink shadow-float">Créer un compte</Link>
+        </div>
+      </div>
+    );
+  }
 
   const sendText = () => {
     if (!text.trim()) return;
-    const t = text.trim();
-    send(slug, { from: "me", text: t, kind: "text" });
+    send(slug, { from: "me", text: text.trim(), kind: "text" });
     setText("");
-    setTimeout(() => send(slug, { from: "pro", text: REPLIES[t.length % REPLIES.length], kind: "text" }), 900);
   };
 
   return (

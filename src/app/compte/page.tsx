@@ -54,9 +54,13 @@ export default function ComptePage() {
         <Row href="/messages" emoji="✉" label="Mes messages" hint="Échanges avec les créatrices" />
         <Row href="/favoris" emoji="♥" label="Mes inspirations" hint={`${count} sauvegardée${count > 1 ? "s" : ""}`} />
         <Row href="/formations" emoji="🎓" label="Formations" hint="Monter en compétences" />
-        {user.role === "creatrice" ? (
+        {user.role === "admin" && (
+          <Row href="/admin" emoji="🛡️" label="Administration" hint="Tableau de bord & revendications" />
+        )}
+        {user.role === "creatrice" && (
           <Row href="/studio" emoji="✨" label="Mon espace créatrice" hint="Agenda, stats, publications" />
-        ) : (
+        )}
+        {user.role === "cliente" && (
           <Row href="/inscription" emoji="🌸" label="Devenir créatrice" hint="Publier & être réservée" />
         )}
         <Row href="/abonnement" emoji="★" label="Abonnement pro" hint="Découverte & Premium" />

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { users } from "@/db/schema";
-import { hashPassword, createSession, findUserByEmail, toPublic } from "@/lib/auth";
+import { hashPassword, createSession, findUserByEmail, toPublic, isAdminEmail } from "@/lib/auth";
 import type { CategoryKey } from "@/lib/data";
 
 export async function POST(req: Request) {
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Un compte existe déjà avec cet email" }, { status: 409 });
   }
 
-  const role = body.role === "creatrice" ? "creatrice" : "cliente";
+  const role = isAdminEmail(email) ? "admin" : body.role === "creatrice" ? "creatrice" : "cliente";
   const passwordHash = await hashPassword(password);
 
   const [user] = await db

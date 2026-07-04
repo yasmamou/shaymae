@@ -127,5 +127,15 @@ export const posts = pgTable("posts", {
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 });
 
+// Revendications de profil (« ce profil m'appartient »)
+export const claims = pgTable("claims", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  creatorSlug: text("creator_slug").notNull(),
+  userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+  note: text("note").default(""),
+  status: text("status").notNull().default("pending"), // pending | approved | rejected
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+}, (t) => [index("claim_status_idx").on(t.status)]);
+
 export type DbUser = typeof users.$inferSelect;
 export type DbReservation = typeof reservations.$inferSelect;

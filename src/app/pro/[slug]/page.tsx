@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { categoryOf } from "@/lib/data";
-import { getCreatorBySlug } from "@/db";
+import { getCreatorBySlug, getCreatorOwner } from "@/db";
 import { Media, Avatar } from "@/lib/Media";
 import { BookingButton } from "@/components/BookingButton";
 import { SaveButton } from "@/components/SaveButton";
 import { FollowButton } from "@/components/FollowButton";
+import { ClaimButton } from "@/components/ClaimButton";
 import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 
 export const dynamic = "force-dynamic";
@@ -32,6 +33,7 @@ export default async function ProPage({
   const { slug } = await params;
   const creator = await getCreatorBySlug(slug);
   if (!creator) notFound();
+  const owner = await getCreatorOwner(slug);
 
   const baSeed = creator.gallery.find((g) => g.beforeAfter);
 
@@ -147,6 +149,8 @@ export default async function ProPage({
             </Link>
             <BookingButton creator={creator} variant="ghost" label="Contacter" />
           </div>
+
+          {!owner && <ClaimButton slug={creator.slug} name={creator.name} />}
         </div>
       </div>
 

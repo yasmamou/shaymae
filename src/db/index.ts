@@ -13,6 +13,12 @@ const sql = neon(url);
 export const db = drizzle(sql, { schema });
 export * as tables from "./schema";
 
+/** Renvoie l'ownerUserId d'un profil (null si non revendiqué). */
+export async function getCreatorOwner(slug: string): Promise<string | null> {
+  const rows = await db.select({ owner: schema.creators.ownerUserId }).from(schema.creators).where(eq(schema.creators.slug, slug)).limit(1);
+  return rows[0]?.owner ?? null;
+}
+
 /** Récupère une créatrice depuis la base et la mappe au type Creator. */
 export async function getCreatorBySlug(slug: string): Promise<Creator | null> {
   const rows = await db.select().from(schema.creators).where(eq(schema.creators.slug, slug)).limit(1);

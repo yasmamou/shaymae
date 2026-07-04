@@ -5,7 +5,7 @@ import {
 } from "react";
 import type { CategoryKey } from "@/lib/data";
 
-export type Role = "cliente" | "creatrice";
+export type Role = "cliente" | "creatrice" | "admin";
 
 export interface User {
   id?: string;

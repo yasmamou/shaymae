@@ -7,11 +7,12 @@ import { CATEGORIES, type CategoryKey, type Service } from "@/lib/data";
 import { DAY_LABELS_FR, type Availability, type DayKey, DEFAULT_AVAILABILITY } from "@/lib/availability";
 import { Media, Avatar } from "@/lib/Media";
 
-type Tab = "apercu" | "demandes" | "agenda" | "dispos" | "profil" | "publications" | "clientes";
+type Tab = "apercu" | "demandes" | "messages" | "agenda" | "dispos" | "profil" | "publications" | "clientes";
 
 const TABS: { key: Tab; label: string }[] = [
   { key: "apercu", label: "Aperçu" },
   { key: "demandes", label: "Demandes" },
+  { key: "messages", label: "Messages" },
   { key: "agenda", label: "Agenda" },
   { key: "dispos", label: "Disponibilités" },
   { key: "profil", label: "Profil" },
@@ -92,6 +93,7 @@ export default function StudioPage() {
       <div className="mt-5">
         {tab === "apercu" && <Apercu resas={resas} onGo={setTab} pending={pending} />}
         {tab === "demandes" && <Demandes resas={resas} patch={patchStatus} />}
+        {tab === "messages" && <Messagerie />}
         {tab === "agenda" && <Agenda resas={resas} />}
         {tab === "dispos" && <Dispos />}
         {tab === "profil" && <Profil profile={profile} onSaved={setProfile} />}
@@ -416,6 +418,69 @@ function Clientes({ resas }: { resas: Resa[] }) {
           <p className="mt-1 text-[12px] text-ink-soft">{c.visits} RDV · dernière : {c.last}</p>
         </div>
       ))}
+    </div>
+  );
+}
+
+/* ── Messagerie pro (boîte de réception) ── */
+interface Conv {
+  key: string; clientUserId: string; clientName: string; creatorSlug: string;
+  messages: { id: string; fromMe: boolean; text: string; kind: string; seed: number | null }[];
+}
+function Messagerie() {
+  const [convs, setConvs] = useState<Conv[]>([]);
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const [reply, setReply] = useState("");
+  const load = () => fetch("/api/studio/messages").then((r) => r.json()).then((d) => setConvs(d.conversations ?? [])).catch(() => {});
+  useEffect(() => { load(); }, []);
+
+  const send = async (c: Conv) => {
+    if (!reply.trim()) return;
+    const text = reply.trim();
+    setConvs((prev) => prev.map((x) => x.key === c.key ? { ...x, messages: [...x.messages, { id: "tmp" + x.messages.length, fromMe: false, text, kind: "text", seed: null }] } : x));
+    setReply("");
+    await fetch("/api/studio/messages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clientUserId: c.clientUserId, creatorSlug: c.creatorSlug, text }) });
+  };
+
+  if (convs.length === 0) return <p className="rounded-3xl border border-dashed border-line bg-blanc/50 p-8 text-center text-sm text-ink-soft">Aucun message pour l&apos;instant. Les messages de vos clientes arriveront ici.</p>;
+
+  return (
+    <div className="space-y-3">
+      {convs.map((c) => {
+        const open = openKey === c.key;
+        const last = c.messages[c.messages.length - 1];
+        return (
+          <div key={c.key} className="overflow-hidden rounded-3xl border border-line bg-blanc/80 shadow-float">
+            <button onClick={() => setOpenKey(open ? null : c.key)} className="flex w-full items-center gap-3 p-4 text-left">
+              <span className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-rose to-or-rose text-sm font-bold text-ink">
+                {c.clientName.slice(0, 2).toUpperCase()}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-bold text-ink">{c.clientName}</span>
+                <span className="block truncate text-[12px] text-ink-soft">{last.kind === "photo" ? "📷 Photo" : last.text}</span>
+              </span>
+              <span className="text-ink-soft">{open ? "▲" : "▼"}</span>
+            </button>
+            {open && (
+              <div className="border-t border-line p-3">
+                <div className="max-h-64 space-y-2 overflow-y-auto px-1">
+                  {c.messages.map((m) => (
+                    <div key={m.id} className={`flex ${m.fromMe ? "justify-start" : "justify-end"}`}>
+                      <p className={`max-w-[80%] rounded-2xl px-3.5 py-2 text-sm ${m.fromMe ? "bg-creme text-ink" : "bg-gradient-to-r from-rose-deep to-or-rose text-white"}`}>
+                        {m.kind === "photo" ? "📷 Photo" : m.text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-2 flex items-center gap-2">
+                  <input value={reply} onChange={(e) => setReply(e.target.value)} onKeyDown={(e) => e.key === "Enter" && send(c)} placeholder="Répondre…" className="flex-1 rounded-full border border-line bg-creme/50 px-4 py-2.5 text-sm outline-none focus:border-or-rose focus:bg-blanc" />
+                  <button onClick={() => send(c)} className="grid h-10 w-10 place-items-center rounded-full bg-ink text-blanc">↑</button>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
