@@ -72,8 +72,14 @@ Base **Neon Postgres** (Vercel) + **Drizzle ORM** posés. Déjà réels & persis
 - [x] **Dashboard entreprise** : demandes de RDV (confirmer/refuser/terminer/absente), **planning & disponibilités réelles** (jours, horaires, durée créneau, congés) reliées à la réservation cliente ; RDV créés « en attente », statuts affichés côté cliente
 - [x] **9 vraies créatrices Montpellier** (comptes Instagram réels : pseudo + lien) ajoutées au catalogue
 
+- [x] **Revendication de profil** (« claim ») : bouton « Ce profil m'appartient » sur les profils importés → validation par l'admin qui rattache le profil et passe le compte en créatrice
+- [x] **Compte Admin + dashboard** `/admin` : stats (utilisateurs, sessions actives, réservations, messages, inscriptions 7j) + validation des revendications. Rôle admin auto pour l'email propriétaire
+- [x] **Boîte de réception pro** : la créatrice reçoit et répond aux messages de ses clientes (onglet Messages du studio)
+
 Reste à ajouter :
 - [ ] **Upload média** réel (photos/vidéos des pros) — Vercel Blob — au lieu des photos génériques
+- [ ] **Notifications** réelles (email/SMS) + **paiement d'acompte** (Stripe)
+- [ ] Rattacher les **inscriptions aux formations** à un compte formateur (aujourd'hui enregistrées côté cliente uniquement)
 - [ ] **Paiements** / acomptes (Stripe) + politique d'annulation appliquée
 - [ ] **Notifications** réelles : email / SMS / push (confirmation, rappel J-1) — Resend/Twilio
 - [ ] **Temps réel** : messagerie & disponibilités (websockets / polling)
