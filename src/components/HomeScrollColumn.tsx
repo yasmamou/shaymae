@@ -33,7 +33,8 @@ export function HomeScrollColumn() {
           hidden ? "-translate-y-full" : "translate-y-0"
         }`}
       >
-        <div className="flex items-center justify-between gap-3 px-5 pb-2 pt-[max(12px,env(safe-area-inset-top))]">
+        {/* Barre titre : inutile sur desktop (déjà dans la SideNav) */}
+        <div className="flex items-center justify-between gap-3 px-5 pb-2 pt-[max(12px,env(safe-area-inset-top))] lg:hidden">
           <h1 className="font-display text-3xl font-bold leading-none text-gradient-gold">Shaymae</h1>
           <div className="flex items-center gap-2">
             <InstallButton />
@@ -47,7 +48,7 @@ export function HomeScrollColumn() {
           </div>
         </div>
         {/* Stories qui buzz — mises en avant */}
-        <div className="px-5 pb-3">
+        <div className="px-5 pb-3 lg:pt-4">
           <p className="mb-2 text-[12px] font-bold tracking-wide text-ink">✨ Stories du moment</p>
           <StoriesRail />
         </div>

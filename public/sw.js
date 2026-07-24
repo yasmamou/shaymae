@@ -1,5 +1,5 @@
 // Service worker Shaymae — léger, sûr (ne touche pas aux API ni à l'auth).
-const CACHE = "shaymae-v1";
+const CACHE = "shaymae-v2";
 const PRECACHE = ["/", "/icon-192.png", "/icon-512.png", "/apple-touch-icon.png"];
 
 self.addEventListener("install", (event) => {
